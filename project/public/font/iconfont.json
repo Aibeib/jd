@@ -1,0 +1,23 @@
+{
+  "id": "2474601",
+  "name": "京东",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3751409",
+      "name": "牛",
+      "font_class": "niu",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "11560179",
+      "name": "京东",
+      "font_class": "jingdong",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    }
+  ]
+}

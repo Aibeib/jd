@@ -12,42 +12,66 @@ const router = new VueRouter({
         {
             path:'/login',
             name:"Login",
-            component:() => import("../views/login")
+            component:() => import("../views/login"),
+            meta:{
+                isShow:false
+            }
         },
         {
             path:'/reg',
             name:"Reg",
-            component:() => import("../views/reg")
+            component:() => import("../views/reg"),
+            meta:{
+                isShow:false
+            }
         },
         {
             path:'/home',
             name:'Home',
-            component: () => import("../views/home")
+            component: () => import("../views/home"),
+            meta:{
+                isShow:true
+            }
         },
         {
             path:'/classify',
             name:"Classify",
-            component:() => import("../views/classify")
+            component:() => import("../views/classify"),
+            meta:{
+                isShow:true
+            }
         },
         {
             path:'/surprise',
             name:"Surprise",
-            component:() => import("../views/surprise")
+            component:() => import("../views/surprise"),
+            meta:{
+                isShow:true
+            }
         },
         {
             path:'/cart',
             name:"Cart",
-            component:() => import("../views/cart")
+            component:() => import("../views/cart"),
+            meta:{
+                isShow:true
+            }
         },
         {
             path:'/mine',
             name:"Mine",
-            component:() => import("../views/mine")
+            component:() => import("../views/mine"),
+            meta:{
+                isShow:true
+            }
         },
         {
             path:'/detail',
             name:'Detail',
-            component:() => import("../views/detail")
+            component:() => import("../views/detail"),
+            meta:{
+                isShow:false
+            }
         },
     ]
 })
