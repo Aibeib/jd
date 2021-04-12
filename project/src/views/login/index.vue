@@ -24,6 +24,7 @@
           v-model="password"
           error-message
           clearable
+          @input="upclass"
         />
         <van-field
           type="text"
@@ -35,9 +36,10 @@
           v-model="password"
           error-message
           clearable
+          @input="upclass"
         />
       </van-cell-group>
-      <button class="btn1" @click="login">登录</button>
+      <button :class="active ? btn1active : btn1" @click="login">登录</button>
       <button class="btn2">一键登录</button>
       <p class="quick-btn">
         <span class="J_ping planBLogin">短信验证码登录</span
@@ -71,17 +73,21 @@
 export default {
   components: {},
   data() {
-    return { phone: "", password: "", downIcon: true };
+    return {
+      phone: "",
+      password: "",
+      downIcon: true,
+      active: false,
+      btn1: "btn1",
+      btn1active: "btn1-active",
+    };
   },
   methods: {
-    //点击图标看密码
-    /*  changeSeen() {
-      this.type = this.seen ? "password" : "text";
-      this.seen = !this.seen;
-    }, */
+    //密码显示隐藏
     eye() {
       this.downIcon = !this.downIcon;
     },
+    //登录请求
     login() {
       const userName = this.phone;
       const password = this.password;
@@ -95,7 +101,16 @@ export default {
           localStorage.setItem("token", res.data.token);
         });
     },
+    //第一个输入框的长度为11位，密码大于6位
+    upclass() {
+      if (this.phone.length == 11 && this.password.length >= 6) {
+        this.active = true;
+      } else {
+        this.active = false;
+      }
+    },
   },
+
   created() {
     this.login();
   },
@@ -140,6 +155,24 @@ html {
   font-size: 17px;
 }
 .btn1 {
+  margin-top: 0.5rem;
+  width: 100%;
+  height: 0.5rem;
+  line-height: 0.5rem;
+  display: block;
+  background-color: #ffbcb3;
+  border-radius: 0.25rem;
+  font-size: 0.16rem;
+  color: #fff;
+  -webkit-box-shadow: 0 0.1rem 20px 0 rgb(255 62 62 / 20%);
+  box-shadow: 0 0.1rem 20px 0 rgb(255 62 62 / 20%);
+  text-align: center;
+  font-family: PingFangSC-Semibold;
+  outline: none;
+  border: none;
+  pointer-events: none;
+}
+.btn1-active {
   margin-top: 0.5rem;
   width: 100%;
   height: 0.5rem;
