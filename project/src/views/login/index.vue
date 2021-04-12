@@ -7,7 +7,12 @@
     </div>
     <div class="contene">
       <van-cell-group>
-        <van-field label="" placeholder="用户名/邮箱/手机号" v-model="phone" />
+        <van-field
+          label=""
+          placeholder="用户名/邮箱/手机号"
+          v-model="phone"
+          clearable
+        />
 
         <van-field
           type="password"
@@ -18,20 +23,46 @@
           right-icon="closed-eye"
           v-model="password"
           error-message
+          clearable
         />
         <van-field
           type="text"
-          label="密码"
+          label=""
           v-show="!downIcon"
           placeholder="请输入密码"
           @click-right-icon="eye"
           right-icon="eye"
           v-model="password"
           error-message
+          clearable
         />
       </van-cell-group>
       <button class="btn1" @click="login">登录</button>
       <button class="btn2">一键登录</button>
+      <p class="quick-btn">
+        <span class="J_ping planBLogin">短信验证码登录</span
+        ><span class="J_ping quickReg">手机快速注册</span>
+      </p>
+      <van-divider class="txt-otherLogin">其它登录方式</van-divider>
+      <div class="quick-type">
+        <p>
+          <span class="iconfont icon-qq"></span>
+          <i>QQ</i>
+        </p>
+        <p>
+          <span class="iconfont icon-weixin"></span>
+          <i>微信</i>
+        </p>
+        <p>
+          <span class="iconfont icon-apple"></span>
+          <i>苹果</i>
+        </p>
+      </div>
+      <p class="policy_tip">
+        未注册的手机号验证后将自动创建京东账号,登录即代表您已同意<span
+          >京东隐私政策</span
+        >
+      </p>
     </div>
   </div>
 </template>
@@ -126,7 +157,7 @@ html {
   border: none;
 }
 .btn2 {
-  margin-top: 0.5rem;
+  margin-top: 0.1rem;
   width: 100%;
   height: 0.5rem;
   line-height: 0.5rem;
@@ -140,5 +171,75 @@ html {
   text-align: center;
   font-family: PingFangSC-Semibold;
   border: 1px solid #ff2000;
+}
+.van-cell {
+  padding: 20px 16px !important;
+}
+.quick-btn {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 0.14rem;
+  margin-top: 0.3rem;
+  overflow: hidden;
+}
+.planBLogin {
+  float: left;
+}
+.quickReg {
+  float: right;
+}
+.txt-otherLogin {
+  color: rgba(0, 0, 0, 0.2);
+
+  margin-top: 0.8rem;
+  background: #fff;
+  text-align: center;
+}
+.van-grid-item {
+  border-radius: 50px !important;
+}
+.quick-type {
+  width: 325px;
+  height: 69px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+}
+.quick-type p {
+  width: 50px;
+  height: 50px;
+}
+.quick-type :nth-child(3) {
+  background-color: #000;
+  border-radius: 50%;
+}
+.quick-type span {
+  font-size: 50px;
+  display: block;
+}
+.quick-type :nth-child(1) span {
+  color: #4a90e2;
+}
+.quick-type :nth-child(2) span {
+  color: chartreuse;
+}
+.quick-type :nth-child(3) span {
+  color: #fff;
+  font-size: 30px;
+  line-height: 50px;
+  text-align: center;
+}
+.quick-type i {
+  display: block;
+  margin-top: 15px;
+}
+.policy_tip {
+  text-align: center;
+  line-height: 0.2rem;
+  font-size: 0.13rem;
+  color: rgba(0, 0, 0, 0.3);
+}
+.policy_tip span {
+  color: #4a90e2;
 }
 </style>
