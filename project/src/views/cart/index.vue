@@ -9,24 +9,27 @@
         <van-icon name="arrow-left" size="18" />
       </template>
       <template #right>
-        <van-popover v-model="showPopover" trigger="click" :actions="actions">
-          <template #reference>
-            <van-icon name="ellipsis" size="18" />
-          </template>
-        </van-popover>
+        <van-icon name="ellipsis" size="18" />
       </template>
     </van-nav-bar>
 
     <div class="addressInf">
-      <van-button type="primary" text="北京市" @click="show = true" />
-      <van-overlay :show="show" @click="show = false">
+      <van-cell is-link @click="showPopup" v-model="carmodel"
+        ><van-icon name="location-o" size="18" /><span>{{
+          carmodel
+        }}</span></van-cell
+      >
+      <van-popup v-model="show" position="bottom">
         <van-area
-          title="请选择地址"
           :area-list="areaList"
-          class="wrapper block"
-          @click.stop
+          :columns-num="3"
+          ref="myArea"
+          title="编辑地址"
+          @change="onChange"
+          @confirm="onConfirm"
+          @cancel="onCancel"
         />
-      </van-overlay>
+      </van-popup>
     </div>
     <ul>
       <li v-for="v in obj" :key="v._id" class="li">
@@ -58,13 +61,14 @@
 </template>
 
 <script>
+import { isLogined } from "../../utils/util"; //引入封装的方法（判断登录）
+
 import { serverUrl } from "../../utils/common";
 import { get } from "../../utils/request";
-
 // import { reqCartlist } from "../../api/cart";
 import { Toast } from "vant";
 // yarn add @vant/area-data;
-// import { Area } from "vant";
+
 import { areaList } from "@vant/area-data";
 
 export default {
@@ -75,14 +79,10 @@ export default {
       obj: [],
       radio: "1",
 
+      // 城市
       areaList,
       show: false,
-      showPopover: false,
-      actions: [
-        { text: "选项一", icon: "add-o" },
-        { text: "选项二", icon: "music-o" },
-        { text: "选项三", icon: "more-o" },
-      ],
+      carmodel: "北京市",
     };
   },
   computed: {
@@ -112,8 +112,9 @@ export default {
   watch: {},
 
   methods: {
+    // 返回
     onClickLeft() {
-      Toast("返回");
+      this.$router.go(-1);
     },
     onClickRight() {
       Toast("按钮");
@@ -128,9 +129,41 @@ export default {
         console.log(this.obj);
       });
     },
+
+    showPopup() {
+      this.show = true;
+    },
+    //value=0改变省，1改变市，2改变区
+    onChange(picker) {
+      let val = picker.getValues();
+      console.log(val); //查看打印
+      let areaName = "";
+      for (var i = 0; i < val.length; i++) {
+        areaName = areaName + (i == 0 ? "" : "") + val[i].name;
+      }
+      this.carmodel = areaName;
+    },
+    //确定选择城市
+    onConfirm(val) {
+      console.log(val[0].name + "," + val[1].name + "," + val[2].name);
+      this.show = false; //关闭弹框
+    },
+    //取消选中城市
+    onCancel() {
+      this.show = false;
+      this.$refs.myArea.reset(); // 重置城市列表
+    },
   },
   created() {
     this.cartlist();
+
+    if (isLogined()) {
+      //如果登录
+      console.log("已登录");
+    } else {
+      Toast.fail("请登录"); //vant 文档组件
+      // this.$router.replace("/login");
+    }
   },
   mounted() {},
   beforeCreate() {},
@@ -151,6 +184,14 @@ export default {
   z-index: 999;
 }
 
+/*地址样式*/
+.van-icon-location-o {
+  vertical-align: middle;
+  padding-right: 5px;
+}
+.van-popup--bottom {
+  border-radius: 15px 15px 0 0 !important;
+}
 /* 底边距50px */
 .cart .van-submit-bar {
   margin-bottom: 50px;

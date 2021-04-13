@@ -2,11 +2,11 @@ import axios from 'axios'
 import { serveUrl } from '../utils/common'
 import {getToken} from './util'
  
-
 const instance = axios.create({
     baseURL: serveUrl,
     timeout: 5000
 })
+
 instance.interceptors.request.use(
     function(config) {
       if (getToken()) {
