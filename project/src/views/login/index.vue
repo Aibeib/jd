@@ -1,7 +1,12 @@
 <template>
   <div class="login">
     <div class="header">
-      <van-nav-bar title="京东登录注册" left-text="" left-arrow>
+      <van-nav-bar
+        title="京东登录注册"
+        left-text=""
+        left-arrow
+        @click-left="back"
+      >
         <template #right> </template>
       </van-nav-bar>
     </div>
@@ -43,7 +48,7 @@
       <button class="btn2">一键登录</button>
       <p class="quick-btn">
         <span class="J_ping planBLogin">短信验证码登录</span
-        ><span class="J_ping quickReg">手机快速注册</span>
+        ><span class="J_ping quickReg" @click="tz">手机快速注册</span>
       </p>
       <van-divider class="txt-otherLogin">其它登录方式</van-divider>
       <div class="quick-type">
@@ -70,6 +75,7 @@
 </template>
 
 <script>
+import { setToken } from "../../utils/util";
 export default {
   components: {},
   data() {
@@ -98,7 +104,8 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          localStorage.setItem("token", res.data.token);
+          setToken(res.token);
+          this.$router.push("/");
         });
     },
     //第一个输入框的长度为11位，密码大于6位
@@ -109,11 +116,15 @@ export default {
         this.active = false;
       }
     },
+    tz() {
+      this.$router.push("/reg");
+    },
+    back() {
+      this.$router.go(-1);
+    },
   },
 
-  created() {
-    this.login();
-  },
+  created() {},
   mounted() {},
   beforeCreate() {},
   beforeMount() {},

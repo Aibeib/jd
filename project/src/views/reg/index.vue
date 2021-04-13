@@ -1,15 +1,19 @@
 <template>
   <div class="reg">
     <div class="header">
-      <van-nav-bar title="京东登录注册" left-text="" left-arrow>
-        <template #right> </template>
+      <van-nav-bar
+        title="京东登录注册"
+        left-text=""
+        left-arrow
+        @click-left="back"
+      >
       </van-nav-bar>
     </div>
     <div class="content">
       <van-form @submit="onSubmit">
         <van-field
-          v-model="username"
-          name="用户名"
+          v-model="userName"
+          name="userName"
           label="用户名"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
@@ -17,22 +21,25 @@
         <van-field
           v-model="password"
           type="password"
-          name="密码"
+          name="password"
           label="密码"
           placeholder="密码"
           :rules="[{ required: true, message: '请填写密码' }]"
         />
         <van-field
           v-model="nickname"
-          name="用户名"
-          label="用户名"
+          name="nickname"
+          label="昵称"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写昵称' }]"
         />
-
-        <van-field name="uploader" label="选择头像">
-          <template #input><van-uploader v-model="uploader" /> </template>
-        </van-field>
+        <!-- 上传图片 -->
+        <van-uploader
+          :after-read="afterRead"
+          v-model="fileList"
+          multiple
+          :max-count="1"
+        />
         <div style="margin: 16px">
           <van-button round block type="info" native-type="submit"
             >注册</van-button
@@ -65,27 +72,53 @@
 <script>
 import { post } from "../../utils/request";
 import { serveUrl } from "../../utils/common";
-import { setToken } from "../../utils/util";
+
 export default {
   components: {},
   data() {
     return {
-      username: "",
+      userName: "",
       password: "",
       nickname: "",
-      uploader: [{ url: "" }],
+      avatar: "",
+      fileList: [
+        // Uploader 根据文件后缀来判断是否为图片文件
+        // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
+        {
+          url:
+            "https://img1.baidu.com/it/u=2702019757,2817613855&fm=26&fmt=auto&gp=0.jpg",
+          isImage: true,
+        },
+      ],
     };
   },
   methods: {
-    onSubmit(values) {
-      console.log("submit", values);
-      post(`${serveUrl}${this._URL.login}`, {
-        userName: "333",
-        password: "111",
+    onSubmit(params) {
+      console.log("submit", params);
+      const userName = this.userName;
+      const password = this.password;
+      const nickname = this.nickname;
+      const avatar = this.avatar;
+      post(`${serveUrl}${this._URL.reg}`, {
+        userName,
+        password,
+        nickname,
+        avatar,
       }).then((res) => {
         console.log(res);
-        setToken(res.token);
+        this.$router.push("/login");
+        localStorage.setItem("nickname", this.nickname);
+        localStorage.setItem("avatar", this.avatar);
       });
+    },
+    //------------上传头像--------------
+    afterRead(file) {
+      // 此时可以自行将文件上传至服务器
+      console.log(file);
+      this.avatar = file.content;
+    },
+    back() {
+      this.$router.go(-1);
     },
   },
   created() {},
@@ -189,5 +222,16 @@ html {
 }
 .policy_tip span {
   color: #4a90e2;
+}
+.preview-cover {
+  position: absolute;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 4px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.3);
 }
 </style>
