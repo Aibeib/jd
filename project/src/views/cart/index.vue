@@ -31,7 +31,8 @@
         />
       </van-popup>
     </div>
-    <ul>
+
+    <ul class="ul">
       <li v-for="v in obj" :key="v._id" class="li">
         <van-checkbox v-model="v.checked"></van-checkbox>
         <van-card
@@ -133,8 +134,9 @@ export default {
       console.log(this.products);
     },
     onSubmit() {
-      Toast.loading({
-        message: "加载中...",
+      Toast.success({
+        message: "提交成功...",
+        // 跳转
         forbidClick: true,
         loadingType: "spinner",
       });
@@ -189,18 +191,47 @@ export default {
   margin: 0;
   padding: 0;
 }
+.ul {
+  width: 100%;
+  margin-bottom: 100px;
+}
 .li {
   position: relative;
+  background-color: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.van-card {
+  position: relative;
+  box-sizing: border-box;
+  padding: 8px 16px !important;
+  color: #323233;
+  font-size: 12px;
+  background-color: #fff;
 }
 .van-checkbox {
   position: absolute;
   top: 50%;
   left: 5px;
   margin-top: -15px;
-  z-index: 999;
+  z-index: 1;
 }
 
 /*地址样式*/
+.van-cell__value--alone {
+  height: 40px;
+  line-height: 40px;
+  color: #323233;
+  text-align: left;
+}
+.van-cell__right-icon {
+  height: 40px;
+  line-height: 40px;
+  margin-left: 4px;
+  color: #969799;
+}
 .van-icon-location-o {
   vertical-align: middle;
   padding-right: 5px;
@@ -212,9 +243,24 @@ export default {
 .cart .van-submit-bar {
   margin-bottom: 50px;
 }
-
+/* 价格 */
+.van-card__price {
+  display: inline-block;
+  color: red;
+  font-weight: 500;
+  font-size: 12px;
+}
+.van-card[data-v-7698a586] {
+  position: relative;
+  box-sizing: border-box;
+  padding: 8px 16px 8px 24px !important;
+  color: #323233;
+  font-size: 12px;
+  background-color: #fff;
+}
 .cart {
   background-color: #f2f2f2;
+  /* background-color: black; */
 }
 .van-nav-bar .van-icon {
   color: #333 !important;
@@ -255,5 +301,11 @@ export default {
   width: 100%;
   height: 70%;
   background-color: #fff;
+}
+.van-checkbox__icon--checked {
+  z-index: -1;
+}
+.van-submit-bar {
+  z-index: 1000;
 }
 </style>
