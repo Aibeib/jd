@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { Toast } from "vant";
 import { setToken } from "../../utils/util";
 export default {
   components: {},
@@ -97,6 +98,7 @@ export default {
     login() {
       const userName = this.phone;
       const password = this.password;
+      const that = this;
       this.$http
         .post("http://localhost:3009/api/v1/auth/login", {
           userName,
@@ -104,8 +106,18 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          setToken(res.token);
-          this.$router.push("/");
+          setToken(res.data.token);
+          localStorage.setItem("oldPassword", this.password);
+          Toast.loading({
+            message: "加载中...",
+            forbidClick: true,
+            onOpened() {
+              setTimeout(() => {
+                that.$router.push("/");
+                Toast.success("登录成功");
+              }, 3000);
+            },
+          });
         });
     },
     //第一个输入框的长度为11位，密码大于6位

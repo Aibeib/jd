@@ -1,37 +1,24 @@
 <template>
-    <div class="detail">
-        详情页
-    </div>
+  <div class=""></div>
 </template>
 
 <script>
 export default {
-    
-    components: {},
-    data() {
-        
-        return {
-            
-        };
-    },
-    methods: {
-        
-    },
-    created() {
-        
-    },
-    mounted() {
-        
-    },
-    beforeCreate() {}, 
-    beforeMount() {},
-    beforeUpdate() {}, 
-    updated() {}, 
-    beforeDestroy() {}, 
-    destroyed() {}, 
-    //如果页面有keep-alive缓存功能，这个函数会触发
-    activated() {}, 
-    }
+  components: {},
+  data() {
+    return {};
+  },
+  computed: {},
+  watch: {},
+
+  methods: {},
+  created() {},
+  mounted() {},
+  beforeCreate() {},
+  beforeMount() {},
+  beforeUpdate() {},
+  updated() {},
+};
 </script>
 <style scoped>
 </style>

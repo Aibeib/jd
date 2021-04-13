@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
-
+import Vuex from 'vuex'
 import axios from "axios";
 import url from "../src/utils/url";
 
@@ -10,6 +10,7 @@ import store from './store'
 
 
 Vue.use(Vant);
+Vue.use(Vuex)
 
 
 import 'vant/lib/index.css';
