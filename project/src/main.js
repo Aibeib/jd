@@ -2,8 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
+
 import axios from "axios";
 import url from "../src/utils/url";
+
+import store from './store'
+
+
 Vue.use(Vant);
 
 
@@ -17,5 +22,5 @@ Vue.prototype.$http = axios; // 把axios挂在到原型上面
 Vue.prototype._URL = url; // 把url挂在到圆形上面
 new Vue({
   render: h => h(App),
-  router,
+  router, store
 }).$mount('#app')

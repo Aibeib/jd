@@ -68,11 +68,21 @@ const router = new VueRouter({
             }
         },
         {
+
+            path: '/mines',
+            name: "Mines",
+            component: () => import("../views/mines"),
+            meta: {
+                isShow: true
+            }
+        },
+        {
             path: '/detail',
             name: 'Detail',
             component: () => import("../views/detail"),
             meta: {
                 isShow: false
+
             }
         },
     ],
