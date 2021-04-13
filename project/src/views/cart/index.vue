@@ -53,7 +53,11 @@
           </template>
         </van-card>
       </li>
-      <van-submit-bar :price="zj * 100" button-text="提交订单">
+      <van-submit-bar
+        :price="zj * 100"
+        button-text="提交订单"
+        @submit="onSubmit"
+      >
         <van-checkbox v-model="checked">全选</van-checkbox>
       </van-submit-bar>
     </ul>
@@ -61,11 +65,10 @@
 </template>
 
 <script>
-import { isLogined } from "../../utils/util"; //引入封装的方法（判断登录）
-
-import { serveUrl } from "../../utils/common";
-import { get } from "../../utils/request";
-// import { reqCartlist } from "../../api/cart";
+import { getToken } from "../../utils/util"; //引入封装的方法（判断登录）
+import { reqCartlist } from "../../api/cart";
+// import { serveUrl } from "../../utils/common";
+// import { get } from "../../utils/request";
 import { Toast } from "vant";
 // yarn add @vant/area-data;
 
@@ -122,11 +125,18 @@ export default {
     change(n) {
       console.log(n);
     },
-    cartlist() {
-      get(`${serveUrl}/api/v1/shop_carts`).then((res) => {
-        console.log(res);
-        this.obj = res;
-        console.log(this.obj);
+    // 请求数据
+    async cartlist() {
+      const result = await reqCartlist();
+      console.log(result);
+      this.obj = result.data;
+      console.log(this.products);
+    },
+    onSubmit() {
+      Toast.loading({
+        message: "加载中...",
+        forbidClick: true,
+        loadingType: "spinner",
       });
     },
 
@@ -154,12 +164,14 @@ export default {
       this.$refs.myArea.reset(); // 重置城市列表
     },
   },
-  created() {
-    this.cartlist();
 
-    if (isLogined()) {
+  created() {
+    console.log(getToken());
+    if (getToken()) {
       //如果登录
+      console.log(getToken());
       console.log("已登录");
+      this.cartlist();
     } else {
       Toast.fail("请登录"); //vant 文档组件
       // this.$router.replace("/login");
@@ -173,6 +185,10 @@ export default {
 };
 </script>
 <style scoped>
+* {
+  margin: 0;
+  padding: 0;
+}
 .li {
   position: relative;
 }

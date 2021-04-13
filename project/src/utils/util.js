@@ -14,7 +14,7 @@ export const setToken = (token) => {
 
 // 获取token
 export const getToken = () => {
-    Cookies.get("token")
+   return Cookies.get("token")
 };
 
 // 移除token
