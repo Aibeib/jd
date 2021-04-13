@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { isLogined } from "../../utils/util.js";
+// import { isLogined } from "../../utils/util.js";
 // import { mapGetters } from 'vuex'
 // import { getActive }  from '../../store'
 export default {
