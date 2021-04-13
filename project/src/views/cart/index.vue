@@ -63,7 +63,7 @@
 <script>
 import { isLogined } from "../../utils/util"; //引入封装的方法（判断登录）
 
-import { serverUrl } from "../../utils/common";
+import { serveUrl } from "../../utils/common";
 import { get } from "../../utils/request";
 // import { reqCartlist } from "../../api/cart";
 import { Toast } from "vant";
@@ -123,7 +123,7 @@ export default {
       console.log(n);
     },
     cartlist() {
-      get(`${serverUrl}/api/v1/shop_carts`).then((res) => {
+      get(`${serveUrl}/api/v1/shop_carts`).then((res) => {
         console.log(res);
         this.obj = res;
         console.log(this.obj);
