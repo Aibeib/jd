@@ -90,7 +90,7 @@
     <div class="youhui">
       <div style="">
         <van-cell @click="find = true" class="news">
-          <h3>优惠</h3>
+          <h3 style="font-weight: 900">优惠</h3>
           <ul>
             <li>
               <span style="color: red">赠品</span>
@@ -160,15 +160,120 @@
         </div>
       </div>
     </div>
+    <div class="adress">
+      <div>
+        <div class="sku-container">
+          <van-sku
+            v-model="showBase"
+            :sku="skuData.sku"
+            :goods="skuData.goods_info"
+            :goods-id="skuData.goods_id"
+            :hide-stock="skuData.sku.hide_stock"
+            :quota="skuData.quota"
+            :quota-used="skuData.quota_used"
+            :initial-sku="initialSku"
+            reset-stepper-on-hide
+            reset-selected-sku-on-hide
+            disable-stepper-input
+            :close-on-click-overlay="closeOnClickOverlay"
+            :custom-sku-validator="customSkuValidator"
+            @buy-clicked="onBuyClicked"
+            @add-cart="onAddCartClicked"
+          >
+          </van-sku>
+          <!-- <van-button block type="primary" @click="showBase = true">
+            xxxx
+          </van-button> -->
+          <van-cell @click="showBase = true" class="kind">
+            <h3 style="font-weight: 900">已选</h3>
+            <div style="width: 80%; padding: 0 5px">
+              <p style="font-size: 9px">
+                本商品支持京东保障服务、京东服务+，点击可选服务
+              </p>
+            </div>
+            <van-icon name="ellipsis" />
+          </van-cell>
+        </div>
+      </div>
+      <div class="live" style="margin-top: 30px">
+        <van-cell @click="showPopup" v-model="showAddr" class="yunshu">
+          <h3 style="font-weight: 900">送至</h3>
+          <div style="width: 80%">
+            <p class="showAddr">{{ showAddr }}</p>
+            <div style="display: flex">
+              <img
+                src="//img12.360buyimg.com/img/s140x26_jfs/t1/128364/22/14770/4290/5f866980Ed74419a4/f0af8ad84c0601bc.png"
+                style="width: 60px; height: 15px"
+              />
+              <span>现货23:00前下单，预计后天送达</span>
+            </div>
+          </div>
+          <van-icon name="ellipsis" />
+        </van-cell>
+        <van-popup
+          v-model="show2"
+          position="bottom"
+          :style="{ height: '50%', padding: '16px' }"
+        >
+          <van-area
+            :area-list="areaList"
+            :columns-placeholder="['请选择', '请选择', '请选择']"
+            value="110000"
+            title="选择地址"
+            @change="changeAddr"
+            @confirm="chooseThis"
+          />
+        </van-popup>
+      </div>
+      <div class="wig" style="padding-bottom: 70px; padding-top: 20px">
+        <span
+          style="
+            font-weight: 900;
+            font-size: 16px;
+            margin-left: 15px;
+            margin-right: 10px;
+          "
+          >重量</span
+        >
+        <span>0.401kg</span>
+      </div>
+      <!-- <div>
+        <img src="" alt="" />
+      </div> -->
+      <div>
+        <van-goods-action>
+          <van-goods-action-icon icon="shop-o" text="店铺" badge="0" />
+          <van-goods-action-icon icon="chat-o" text="客服" dot />
+          <van-goods-action-icon icon="cart-o" text="购物车" badge="0" />
+
+          <van-goods-action-button
+            type="warning"
+            text="加入购物车"
+            @cilck="gocart"
+          />
+          <van-goods-action-button type="danger" text="立即购买" />
+        </van-goods-action>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import skuData from "../../data";
 import { Toast } from "vant";
+import { areaList } from "../../list";
+import { reqProductDetail } from "../../api/product";
 export default {
   components: {},
   data() {
     return {
+      obj: {},
+      show2: false, //是否显示弹出层
+      detailAddress: "", //绑定详细地址输入框
+      areaList: areaList, //可选地址数据列表
+      showAddr: "天津河西区挂甲寺街道", //显示校区地址
+      resAddr: "", //传给后端的位置信息
+
       images: [
         "https://img0.baidu.com/it/u=1060316738,1765304713&fm=26&fmt=auto&gp=0.jpg",
         "https://img0.baidu.com/it/u=2134477487,160184881&fm=26&fmt=auto&gp=0.jpg",
@@ -181,9 +286,32 @@ export default {
       },
       show: false,
       find: false,
+      show1: false,
+      skuData: skuData,
+      showBase: true,
+      showCustom: false,
+      showStepper: false,
+      showSoldout: false,
+      closeOnClickOverlay: true,
+      initialSku: {
+        s1: "30349",
+        s2: "1193",
+        selectedNum: 3,
+      },
+      customSkuValidator: () => "lalla",
     };
   },
   methods: {
+    async getDetail(id) {
+      const res = await reqProductDetail(id);
+      console.log(res);
+      if (res.status == 200) {
+        this.obj = res.products;
+      }
+    },
+    gocart() {
+      // this.$router.push('/cart')
+    },
     onClickLeft() {
       console.log(11);
     },
@@ -205,8 +333,41 @@ export default {
     del() {
       this.show = false;
     },
+    onBuyClicked(data) {
+      this.$toast("buy:" + JSON.stringify(data));
+      console.log(JSON.stringify(data));
+    },
+
+    onAddCartClicked(data) {
+      this.$toast("add cart:" + JSON.stringify(data));
+    },
+
+    //地区选择
+    changeAddr(picker) {
+      //value=0改变省，1改变市，2改变区
+      let val = picker.getValues();
+      this.resAddr = val;
+    },
+    //选好地址后点击确定
+    chooseThis() {
+      this.show2 = false;
+      //选中地址成功后回显
+      this.showAddr =
+        this.resAddr[0].name +
+        "-" +
+        this.resAddr[1].name +
+        "-" +
+        this.resAddr[2].name;
+      // console.log(this.resAddr, "即将传给后端的省市区信息");
+    },
+    showPopup() {
+      this.show2 = true;
+    },
   },
-  created() {},
+  created() {
+    const id = this.$route.params.id;
+    this.getDetail(id);
+  },
   mounted() {},
   beforeCreate() {},
   beforeMount() {},
@@ -219,8 +380,27 @@ export default {
 };
 </script>
 <style >
-/* .youhui .news {
+.sku-container .kind {
+  display: flex;
+  justify-content: space-between;
+}
+/* .sku-container {
+
+  border-bottom: 1px solid transparent;
+
+  border-color: rgba(151, 151, 151, 0.9);
 } */
+.live .yunshu {
+  display: flex;
+  justify-content: space-around;
+}
+.sku-container {
+  padding: 0 15px;
+}
+.youhui .news {
+  border-radius: 20px;
+  margin-top: 15px;
+}
 .content ul li p {
   font-size: 13px;
 }
@@ -250,11 +430,11 @@ export default {
 .van-cell__value {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
-  /* background: #999; */
 }
 .youhui {
-  background: #999;
+  background: rgba(220, 220, 220, 0.5);
+  overflow: hidden;
+  padding-bottom: 15px;
 }
 .youhui .content {
   padding: 16px 16px 100px;
