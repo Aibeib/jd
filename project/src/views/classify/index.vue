@@ -881,7 +881,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .box {
   position: fixed;
   top: 54px;
