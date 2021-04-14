@@ -49,6 +49,12 @@ const router = new VueRouter({
             }
         },
         {
+            path:'/classify',
+            name:"Classify",
+            component:() => import("../views/classify"),
+            meta:{
+                isShow:true
+            },
             path: '/classify',
             name: "Classify",
             component: () => import("../views/classify"),
