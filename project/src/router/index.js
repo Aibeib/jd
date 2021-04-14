@@ -39,7 +39,8 @@ const router = new VueRouter({
             component:() => import("../views/classify"),
             meta:{
                 isShow:true
-            }
+            },
+
         },
         {
             path:'/surprise',
