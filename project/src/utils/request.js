@@ -18,7 +18,7 @@ instance.interceptors.request.use(
       return Promise.reject(error);
     }
   );
-  instance.interceptors.response.use(
+instance.interceptors.response.use(
     function(response) {
       return response;
     },
@@ -30,3 +30,5 @@ instance.interceptors.request.use(
   export const get = (url,params) => instance.get(url,{params});
 
   export const post = (url, data) => instance.post(url, data);
+  
+  export const del = (url) => instance.delete(url);

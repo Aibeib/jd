@@ -31,7 +31,12 @@
         />
       </van-popup>
     </div>
-
+    <div class="noProduct" v-if="noProduct">
+      <img
+        src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fbpic.588ku.com%2Felement_origin_min_pic%2F17%2F06%2F07%2Fc7aa138a2c508a077398113345a3ac2a.jpg%21%2Ffwfh%2F804x804%2Fquality%2F90%2Funsharp%2Ftrue%2Fcompress%2Ftrue&refer=http%3A%2F%2Fbpic.588ku.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1620959363&t=02830683c902817d8f599cee2759efae"
+        alt=""
+      />
+    </div>
     <ul class="ul">
       <li v-for="v in obj" :key="v._id" class="li">
         <van-checkbox v-model="v.checked"></van-checkbox>
@@ -51,6 +56,9 @@
               input-width="25px"
               button-size="25px"
             />
+            <button @click="del(v._id)">
+              <van-icon name="delete-o" size="18" />
+            </button>
           </template>
         </van-card>
       </li>
@@ -62,12 +70,17 @@
         <van-checkbox v-model="checked">全选</van-checkbox>
       </van-submit-bar>
     </ul>
+    <div class="scrollTop" v-show="flag_scroll" @click="backTop">
+      <van-icon name="arrow-up" size="40" color="gray" />
+    </div>
   </div>
 </template>
 
 <script>
 import { getToken } from "../../utils/util"; //引入封装的方法（判断登录）
 import { reqCartlist } from "../../api/cart";
+import { delProduct } from "../../api/cart"; //引入删除购物车商品接口
+
 // import { serveUrl } from "../../utils/common";
 // import { get } from "../../utils/request";
 import { Toast } from "vant";
@@ -87,6 +100,10 @@ export default {
       areaList,
       show: false,
       carmodel: "北京市",
+
+      noProduct: false,
+      flag_scroll: false,
+      scroll: 0,
     };
   },
   computed: {
@@ -132,6 +149,12 @@ export default {
       console.log(result);
       this.obj = result.data;
       console.log(this.products);
+      console.log(this.obj.length);
+      if (this.obj.length == 0) {
+        this.noProduct = true;
+      } else {
+        this.noProduct = false;
+      }
     },
     onSubmit() {
       Toast.success({
@@ -140,6 +163,18 @@ export default {
         forbidClick: true,
         loadingType: "spinner",
       });
+    },
+    // 删除商品按钮
+    async del(id) {
+      const result = await delProduct(id);
+      console.log(result);
+      this.cartlist(),
+        Toast.success({
+          message: "删除成功",
+          // 删除对应元素
+        });
+
+      // console.log(this);
     },
 
     showPopup() {
@@ -165,6 +200,23 @@ export default {
       this.show = false;
       this.$refs.myArea.reset(); // 重置城市列表
     },
+
+    //返回顶部
+
+    backTop() {
+      document.documentElement.scrollTop = 0;
+    },
+
+    //滑动超过200时显示按钮
+    handleScroll() {
+      let scrollTop = document.documentElement.scrollTop;
+      //console.log(document.documentElement.scrollTop);
+      if (scrollTop > 200) {
+        this.flag_scroll = true;
+      } else {
+        this.flag_scroll = false;
+      }
+    },
   },
 
   created() {
@@ -179,7 +231,9 @@ export default {
       // this.$router.replace("/login");
     }
   },
-  mounted() {},
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
   beforeCreate() {},
   beforeMount() {},
   beforeUpdate() {},
@@ -190,6 +244,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+}
+.cart {
+  min-height: 667px;
+  background-color: #f6f6f6 !important;
 }
 .ul {
   width: 100%;
@@ -307,5 +365,43 @@ export default {
 }
 .van-submit-bar {
   z-index: 1000;
+}
+/* 删除按钮 */
+.van-stepper {
+  font-size: 0;
+  -webkit-user-select: none;
+  user-select: none;
+  display: inline-block;
+  margin-right: 15px;
+  vertical-align: middle;
+  /* float: right; */
+}
+.van-card__footer button {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: #f2f3f5;
+  border-radius: 3px;
+  color: inherit;
+  font: inherit;
+  float: right;
+}
+.noProduct img {
+  width: 100%;
+}
+/* 回顶部 */
+.scrollTop {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 20px;
+  background: rgb(231, 229, 229);
+  left: 361px;
+  top: 498px;
+}
+.scrollTop .van-icon {
+  font-size: 28px !important;
+  line-height: 36px;
 }
 </style>
