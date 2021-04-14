@@ -368,6 +368,7 @@
   </div>
 </template>
 <script>
+import { mapMutations } from "vuex";
 import Header from "../../components/header";
 import axios from "axios";
 import { serveUrl } from "../../utils/common";
@@ -433,6 +434,9 @@ export default {
     };
   },
   methods: {
+    ...mapMutations({
+      changeactive: "footerActive/setActive",
+    }),
     goSousuo() {
       this.$router.push("/sousuo");
     },
@@ -500,6 +504,7 @@ export default {
   },
   created() {
     this.getLunbo();
+    this.changeactive(0);
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);

@@ -2,6 +2,7 @@
   <div class="header">
     <slot name="left"></slot>
     <slot></slot>
+    <slot name="center"></slot>
     <slot name="right"></slot>
   </div>
 </template>
@@ -26,4 +27,11 @@ export default {
 };
 </script>
 <style scoped>
+.header {
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  padding: 0 12px;
+  background-color: aqua;
+}
 </style>

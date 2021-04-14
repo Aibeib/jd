@@ -39,6 +39,7 @@ export default {
 body {
   background-color: #f3f3f3;
 }
+
 #app {
   width: 100%;
   height: 100%;
@@ -55,7 +56,11 @@ body {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
+
   transition: all 500ms;
+
+  transition: all 500ms;
+
   position: absolute;
 }
 .slide-right-enter {

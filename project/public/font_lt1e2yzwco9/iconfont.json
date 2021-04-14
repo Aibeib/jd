@@ -1,0 +1,30 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "1235507",
+      "name": "qq",
+      "font_class": "qq",
+      "unicode": "f00a6",
+      "unicode_decimal": 983206
+    },
+    {
+      "icon_id": "1330569",
+      "name": "微信",
+      "font_class": "weixin",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "6345957",
+      "name": "apple",
+      "font_class": "apple",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    }
+  ]
+}
