@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router' 
 import Vant from 'vant';
+import { Icon } from 'vant';
+Vue.use(Icon);
 
 Vue.use(Vant);
 
