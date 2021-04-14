@@ -515,11 +515,7 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
   },
-<<<<<<< HEAD
-=======
 
-  mounted() {},
->>>>>>> 10ca8e95157c352c10c7606d8270d2a97809e58f
   beforeCreate() {},
   beforeMount() {},
   beforeUpdate() {},

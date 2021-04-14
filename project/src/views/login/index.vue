@@ -88,10 +88,6 @@ export default {
       btn1active: "btn1-active",
     };
   },
-<<<<<<< HEAD
-
-=======
->>>>>>> 10ca8e95157c352c10c7606d8270d2a97809e58f
   methods: {
     //密码显示隐藏
     eye() {
