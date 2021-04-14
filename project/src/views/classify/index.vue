@@ -10,12 +10,11 @@
         background=""
         placeholder="请输入搜索关键词"
         class="search"
-        @focus="tiao"
       />
     </div>
     <div class="box">
       <div class="navtit">
-        <van-sidebar v-model="activeKey" class="nav" @change="add">
+        <van-sidebar v-model="activeKey" class="nav">
           <div v-for="(item, index) in arr" :key="index" class="too">
             <van-sidebar-item :title="item" />
           </div>
@@ -496,6 +495,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   components: {},
   data() {
@@ -862,33 +862,22 @@ export default {
       ],
     };
   },
+
   methods: {
-    add(index) {
-      console.log(index);
-      // let num = index * 60;
-      // let nav = document.querySelector(".navtit");
-      // nav.style.transform = "translateY(-" + num + "px)";
-    },
+    ...mapMutations({
+      changeactive: "footerActive/setActive",
+    }),
     back() {
       this.$router.go(-1);
     },
-    tiao() {},
   },
-  created() {},
-  mounted() {},
-  beforeCreate() {},
-  beforeMount() {},
-  beforeUpdate() {},
-  updated() {},
-  beforeDestroy() {},
-  destroyed() {},
-  //如果页面有keep-alive缓存功能，这个函数会触发
-  activated() {},
+  created() {
+    this.changeactive(1);
+    console.log(this.$store.state.footerActive.active);
+  },
 };
 </script>
 <style>
-.classify {
-}
 .box {
   position: fixed;
   top: 54px;

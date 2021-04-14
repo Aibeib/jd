@@ -1,12 +1,11 @@
 <template>
   <div id="app">
     <div class="Router">
-      <transition :name="transitionName">
+      <transition :name="transitionName" mode="out-in">
         <router-view></router-view>
-        <router-view name="main"></router-view>
       </transition>
-      <Footer v-if="$route.meta.isShow"></Footer>
     </div>
+    <Footer v-if="$route.meta.isShow"></Footer>
   </div>
 </template>
 <script>
@@ -53,7 +52,13 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
+
   transition: all 1500ms;
+
+  transition: all 500ms;
+
+  transition: all 500ms;
+
   position: absolute;
 }
 .slide-right-enter {

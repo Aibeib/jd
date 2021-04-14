@@ -4,6 +4,7 @@
     </div>
 </template>
 <script>
+import { mapMutations } from 'vuex'
 export default {
     
     components: {},
@@ -14,12 +15,15 @@ export default {
         };
     },
     methods: {
-        
+        ...mapMutations({
+            changeactive:'footerActive/setActive'
+        })
     },
     created() {
         
     },
     mounted() {
+        this.changeactive(2)
         
     },
     beforeCreate() {}, 
