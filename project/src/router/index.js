@@ -2,7 +2,20 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 
+
+// 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+    return originalPush.call(this, location).catch(err => err)
+}
+
+
+
+
 Vue.use(VueRouter)
+
+Vue.use(VueRouter)
+
 const router = new VueRouter({
     routes: [
         {
@@ -36,6 +49,12 @@ const router = new VueRouter({
             }
         },
         {
+            path:'/classify',
+            name:"Classify",
+            component:() => import("../views/classify"),
+            meta:{
+                isShow:true
+            },
             path: '/classify',
             name: "Classify",
             component: () => import("../views/classify"),
@@ -44,11 +63,30 @@ const router = new VueRouter({
             }
         },
         {
+
+            path: '/sousuo',
+            name: 'Sousuo',
+            component: () => import("../views/sousuo"),
+            meta: {
+                isShow: false
+            }
+        },
+        {
+            path: '/classify',
+            name: "Classify",
+            component: () => import("../views/classify"),
+            meta: {
+                isShow: true
+            },
+        },
+        {
+
             path: '/surprise',
             name: "Surprise",
             component: () => import("../views/surprise"),
             meta: {
                 isShow: true
+
             }
         },
         {
@@ -84,6 +122,36 @@ const router = new VueRouter({
                 isShow: false
 
             }
+        },
+        {
+            path: '/settlement',
+            name: 'Settlement',
+            component: () => import("../views/settlement"),
+            meta: {
+                isShow: false
+
+            }
+
+        },
+        {
+            path: '/deal',
+            name: 'Deal',
+            component: () => import("../views/deal"),
+            meta: {
+                isShow: false
+
+            }
+
+        },
+        {
+            path: '/areaList',
+            name: 'AreaList',
+            component: () => import("../views/areaList"),
+            meta: {
+                isShow: false
+
+            }
+
         },
     ],
 
