@@ -79,6 +79,7 @@
         button-text="提交订单"
         v-model="subdata"
         @submit="onSubmit(subdata)"
+        v-show="havesubmit"
       >
         <van-checkbox v-model="checked">全选</van-checkbox>
       </van-submit-bar>
@@ -111,13 +112,15 @@ export default {
       actions: [
         { text: "首页", icon: "shop-o" },
         { text: "分类", icon: "apps-o" },
-        { text: "购物车", icon: "shopping-cart-o" },
+        { text: "京喜", icon: "youzan-shield" },
         { text: "我的", icon: "friends-o" },
       ],
 
       num: "1",
       obj: [],
       radio: "1",
+
+      havesubmit: true,
 
       // 城市
       areaList,
@@ -178,7 +181,7 @@ export default {
           this.$router.push("/classify");
           break;
         case 2:
-          this.$router.push("/cart");
+          this.$router.push("/surprise");
           break;
         case 3:
           this.$router.push("/mine");
@@ -210,14 +213,23 @@ export default {
       // console.log(this.obj.length);//判断购物车是否有商品
       if (this.obj.length == 0) {
         this.noProduct = true;
+        this.havesubmit = false; //提交按钮是否显示
       } else {
         this.noProduct = false;
+        this.havesubmit = true;
       }
+      // let arr = this.obj.filter((item) => item.checked == true);
+      // if (arr.length == 0) {
+      //   this.havesubmit = false;
+      // } else {
+      //   this.havesubmit = true;
+      // }
     },
 
     //    提交订单 ！！！！！！！！
     async onSubmit(subdata) {
       const arr = this.obj.filter((item) => item.checked == true);
+
       console.log(arr);
       arr.forEach((item, i) => {
         console.log("选中的商品", item, i);
@@ -237,24 +249,33 @@ export default {
       this.subdata.address = this.carmodel;
       console.log(this.subdata);
 
-      let res = await subOrder(subdata);
-      console.log(res);
-      console.log(res.data.code == "success");
-      if (res.data.code == "success") {
-        Toast.success({
-          message: "提交成功",
-          // 跳转
-          forbidClick: true,
-          loadingType: "spinner",
-        });
-        this.$router.push("/settlement"); //跳转到订单详情页
-      } else {
+      if (arr.length == 0) {
         Toast.fail({
-          message: "提交失败",
+          message: "请添加商品",
           // 跳转
           forbidClick: true,
           loadingType: "spinner",
         });
+      } else {
+        let res = await subOrder(subdata);
+        console.log(res);
+        console.log(res.data.code == "success");
+        if (res.data.code == "success") {
+          Toast.success({
+            message: "提交成功",
+            // 跳转
+            forbidClick: true,
+            loadingType: "spinner",
+          });
+          this.$router.push("/settlement"); //跳转到订单详情页
+        } else {
+          Toast.fail({
+            message: "提交失败",
+            // 跳转
+            forbidClick: true,
+            loadingType: "spinner",
+          });
+        }
       }
     },
 
@@ -317,6 +338,12 @@ export default {
   },
 
   created() {
+    // let arr = this.obj.filter((item) => item.checked == true);
+    // if (arr.length == 0) {
+    //   this.havesubmit = false;
+    // } else {
+    //   this.havesubmit = true;
+    // }
     console.log(getToken());
     if (getToken()) {
       //如果登录
