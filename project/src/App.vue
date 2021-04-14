@@ -55,6 +55,8 @@ export default {
 
   transition: all 500ms;
 
+  transition: all 500ms;
+
   position: absolute;
 }
 .slide-right-enter {

@@ -7,7 +7,7 @@
         left-arrow
         @click-left="back"
       >
-        <template #right> </template>
+        <!-- <template #right> </template> -->
       </van-nav-bar>
     </div>
     <div class="contene">
@@ -89,6 +89,7 @@ export default {
       btn1active: "btn1-active",
     };
   },
+
   methods: {
     //密码显示隐藏
     eye() {
@@ -174,7 +175,7 @@ html {
   font-size: 17px;
 }
 .van-nav-bar .van-icon {
-  color: #000 !important;
+  color: #000;
   font-size: 17px;
 }
 .btn1 {
@@ -229,7 +230,7 @@ html {
   border: 1px solid #ff2000;
 }
 .van-cell {
-  padding: 20px 16px !important;
+  padding: 20px 16px;
 }
 .quick-btn {
   color: rgba(0, 0, 0, 0.4);
@@ -251,7 +252,7 @@ html {
   text-align: center;
 }
 .van-grid-item {
-  border-radius: 50px !important;
+  border-radius: 50px;
 }
 .quick-type {
   width: 325px;
