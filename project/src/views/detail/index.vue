@@ -262,7 +262,7 @@
 import skuData from "../../data";
 import { Toast } from "vant";
 import { areaList } from "../../list";
-import { reqProductDetail } from "../../api/product";
+// import { reqProductDetail } from "../../api/product";
 export default {
   components: {},
   data() {
@@ -288,7 +288,7 @@ export default {
       find: false,
       show1: false,
       skuData: skuData,
-      showBase: true,
+      showBase: false,
       showCustom: false,
       showStepper: false,
       showSoldout: false,
@@ -302,13 +302,13 @@ export default {
     };
   },
   methods: {
-    async getDetail(id) {
-      const res = await reqProductDetail(id);
-      console.log(res);
-      if (res.status == 200) {
-        this.obj = res.products;
-      }
-    },
+    // async getDetail(id) {
+    //   const res = await reqProductDetail(id);
+    //   console.log(res);
+    //   if (res.status == 200) {
+    //     this.obj = res.products;
+    //   }
+    // },
     gocart() {
       // this.$router.push('/cart')
     },
@@ -365,8 +365,8 @@ export default {
     },
   },
   created() {
-    const id = this.$route.params.id;
-    this.getDetail(id);
+    // const id = this.$route.params.id;
+    // this.getDetail(id);
   },
   mounted() {},
   beforeCreate() {},
@@ -379,7 +379,7 @@ export default {
   activated() {},
 };
 </script>
-<style >
+<style scoped>
 .sku-container .kind {
   display: flex;
   justify-content: space-between;
