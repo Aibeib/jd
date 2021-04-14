@@ -36,9 +36,7 @@ export default {
 </script>
 
 <style>
-body {
-  background-color: #f3f3f3;
-}
+ 
 
 #app {
   width: 100%;

@@ -72,7 +72,6 @@
       </p>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -80,8 +79,7 @@ import { setToken } from "../../utils/util";
 export default {
   components: {},
   data() {
-
-     return {
+    return {
       phone: "",
       password: "",
       downIcon: true,
@@ -92,7 +90,6 @@ export default {
   },
   methods: {},
 
-   
   methods: {
     //密码显示隐藏
     eye() {
@@ -128,7 +125,6 @@ export default {
       this.$router.go(-1);
     },
   },
-
 
   created() {},
   mounted() {},

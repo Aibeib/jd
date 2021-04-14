@@ -522,7 +522,7 @@ export default {
 <style scoped>
 body,
 html {
-  background-color: #fafafa;
+  background-color: #f3f3f3;
 }
 .home .contant {
   width: 96%;
