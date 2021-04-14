@@ -50,8 +50,8 @@ export default {
         address: res.addressDetail,
         isDefault: res.isDefault,
       });
-      this.$router.back();
-      Toast("save");
+      this.$router.push("/settlement");
+      Toast("添加成功");
     },
     onDelete() {
       Toast("delete");

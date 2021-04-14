@@ -7,7 +7,7 @@
         left-arrow
         @click-left="back"
       >
-        <!-- <template #right> </template> -->
+        <template #right> </template>
       </van-nav-bar>
     </div>
     <div class="contene">
@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import { Toast } from "vant";
 import { setToken } from "../../utils/util";
 export default {
   components: {},
@@ -89,7 +88,6 @@ export default {
       btn1active: "btn1-active",
     };
   },
-
   methods: {
     //密码显示隐藏
     eye() {
@@ -99,7 +97,6 @@ export default {
     login() {
       const userName = this.phone;
       const password = this.password;
-      const that = this;
       this.$http
         .post("http://localhost:3009/api/v1/auth/login", {
           userName,
@@ -107,18 +104,8 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          setToken(res.data.token);
-          localStorage.setItem("oldPassword", this.password);
-          Toast.loading({
-            message: "加载中...",
-            forbidClick: true,
-            onOpened() {
-              setTimeout(() => {
-                that.$router.push("/");
-                Toast.success("登录成功");
-              }, 3000);
-            },
-          });
+          setToken(res.token);
+          this.$router.push("/");
         });
     },
     //第一个输入框的长度为11位，密码大于6位
@@ -175,7 +162,7 @@ html {
   font-size: 17px;
 }
 .van-nav-bar .van-icon {
-  color: #000;
+  color: #000 !important;
   font-size: 17px;
 }
 .btn1 {
@@ -230,7 +217,7 @@ html {
   border: 1px solid #ff2000;
 }
 .van-cell {
-  padding: 20px 16px;
+  padding: 20px 16px !important;
 }
 .quick-btn {
   color: rgba(0, 0, 0, 0.4);
@@ -252,7 +239,7 @@ html {
   text-align: center;
 }
 .van-grid-item {
-  border-radius: 50px;
+  border-radius: 50px !important;
 }
 .quick-type {
   width: 325px;

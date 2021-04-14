@@ -11,12 +11,18 @@
     <div class="content">
       <!-- 收货地址 -->
       <div class="dz">
-        <van-cell
+        <!-- <van-cell
           title="添加收货地址"
           is-link
           to="deal"
           icon="location-o"
           border="false"
+        /> -->
+        <van-address-list
+          v-model="chosenAddressId"
+          :list="list"
+          default-tag-text="默认"
+          @edit="onEdit"
         />
       </div>
 
@@ -98,12 +104,24 @@
 </template>
 
 <script>
+import { Toast } from "vant";
+import { AnAddress } from "../../utils/userInfo";
 export default {
   components: {},
   data() {
     return {
       value: 1,
       obj: null,
+      chosenAddressId: "1",
+      list: [
+        {
+          id: "1",
+          name: "张三",
+          tel: "13000000000",
+          address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室",
+          isDefault: true,
+        },
+      ],
     };
   },
   computed: {},
@@ -120,6 +138,13 @@ export default {
     },
     back() {
       this.$router.go(-1);
+    },
+    onEdit(item, index) {
+      Toast("编辑地址:" + index);
+    },
+    async getThisAddress() {
+      let res = await AnAddress(this.$route.query.id);
+      console.log(res);
     },
   },
   created() {
@@ -145,13 +170,15 @@ export default {
   overflow: hidden;
 }
 .dz {
-  padding-bottom: 16px;
   background: #fff
     url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAAKBAMAAACOO0tGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///4u16Oxtbezz/J3B7NDh9vSmprjS8vGNjfjDw/vd3f7w8O57e0EOI68AAABSSURBVCjPY2CAAE4l7GACVJ4hUBArEIXJL8KuXw0mz4xdv2ABVJ77EHYDGmAGmGDXLwKT58CuX2cDTIEjdgOcYfJJ2A3Qgsmz4/CBwWgQUiMIAXzCOFELLk/nAAAAAElFTkSuQmCC) -7px
     bottom repeat-x;
   background-size: 64px 5px;
-  padding: 12px 10px;
+
   position: relative;
+}
+.van-address-list {
+  padding: 0;
 }
 .van-cell {
   margin: 10px -10px 0;
