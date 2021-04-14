@@ -10,6 +10,7 @@
         background=""
         placeholder="请输入搜索关键词"
         class="search"
+        @focus="tiao"
       />
     </div>
     <div class="box">
@@ -869,6 +870,9 @@ export default {
     }),
     back() {
       this.$router.go(-1);
+    },
+    tiao() {
+      this.$router.push("/sousuo");
     },
   },
   created() {
