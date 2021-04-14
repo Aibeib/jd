@@ -2,6 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
+import Vuex from 'vuex'
+Vue.use(Vuex)
+import { Icon } from 'vant';
+Vue.use(Icon);
+
 import { Lazyload } from 'vant';
 
 
@@ -11,7 +16,6 @@ import axios from "axios";
 import url from "../src/utils/url";
 
 import store from './store'
-
 
 
 Vue.use(Vant);

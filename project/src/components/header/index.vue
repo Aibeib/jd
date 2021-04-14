@@ -1,6 +1,7 @@
 <template>
   <div class="header">
     <slot name="left"></slot>
+    <slot></slot>
     <slot name="center"></slot>
     <slot name="right"></slot>
   </div>

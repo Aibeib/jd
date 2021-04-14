@@ -7,7 +7,7 @@
         left-arrow
         @click-left="back"
       >
-        <template #right> </template>
+        <!-- <template #right> </template> -->
       </van-nav-bar>
     </div>
     <div class="contene">
@@ -88,6 +88,7 @@ export default {
       btn1active: "btn1-active",
     };
   },
+
   methods: {
     //密码显示隐藏
     eye() {
@@ -217,7 +218,7 @@ html {
   border: 1px solid #ff2000;
 }
 .van-cell {
-  padding: 20px 16px !important;
+  padding: 20px 16px;
 }
 .quick-btn {
   color: rgba(0, 0, 0, 0.4);
