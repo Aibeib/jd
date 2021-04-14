@@ -88,7 +88,6 @@ export default {
       btn1active: "btn1-active",
     };
   },
-  methods: {},
 
   methods: {
     //密码显示隐藏
@@ -219,7 +218,7 @@ html {
   border: 1px solid #ff2000;
 }
 .van-cell {
-  padding: 20px 16px !important;
+  padding: 20px 16px;
 }
 .quick-btn {
   color: rgba(0, 0, 0, 0.4);
