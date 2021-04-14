@@ -4,12 +4,24 @@
       title="购物车"
       @click-left="onClickLeft"
       @click-right="onClickRight"
+      class="headinf"
     >
       <template #left>
         <van-icon name="arrow-left" size="18" />
       </template>
       <template #right>
-        <van-icon name="ellipsis" size="18" />
+        <van-popover
+          v-model="showPopover"
+          trigger="click"
+          :actions="actions"
+          @select="infbuttons"
+        >
+          <template #reference>
+            <van-button type="primary">
+              <van-icon name="ellipsis" size="18"
+            /></van-button>
+          </template>
+        </van-popover>
       </template>
     </van-nav-bar>
 
@@ -65,7 +77,8 @@
       <van-submit-bar
         :price="zj * 100"
         button-text="提交订单"
-        @submit="onSubmit"
+        v-model="subdata"
+        @submit="onSubmit(subdata)"
       >
         <van-checkbox v-model="checked">全选</van-checkbox>
       </van-submit-bar>
@@ -77,6 +90,7 @@
 </template>
 
 <script>
+import { subOrder } from "../../api/cart"; //引入提交订单方法
 import { getToken } from "../../utils/util"; //引入封装的方法（判断登录）
 import { reqCartlist } from "../../api/cart";
 import { delProduct } from "../../api/cart"; //引入删除购物车商品接口
@@ -92,6 +106,15 @@ export default {
   components: {},
   data() {
     return {
+      // 气泡显示
+      showPopover: false,
+      actions: [
+        { text: "首页", icon: "shop-o" },
+        { text: "分类", icon: "apps-o" },
+        { text: "购物车", icon: "shopping-cart-o" },
+        { text: "我的", icon: "friends-o" },
+      ],
+
       num: "1",
       obj: [],
       radio: "1",
@@ -104,8 +127,21 @@ export default {
       noProduct: false,
       flag_scroll: false,
       scroll: 0,
+      subdata: {
+        receiver: "", // 收货人
+        regions: "", // 收货的省市区县
+        address: "", // 收货地址
+        orderDetails: [
+          // {
+          //   quantity: "", // 数量
+          //   product: "", // 商品id
+          //   price: "", // 商品单价
+          // },
+        ],
+      },
     };
   },
+
   computed: {
     checked: {
       // set设置选中状态
@@ -133,37 +169,95 @@ export default {
   watch: {},
 
   methods: {
+    infbuttons(action, index) {
+      switch (index) {
+        case 0:
+          this.$router.push("/home");
+          break;
+        case 1:
+          this.$router.push("/classify");
+          break;
+        case 2:
+          this.$router.push("/cart");
+          break;
+        case 3:
+          this.$router.push("/mine");
+          break;
+        default:
+          break;
+      }
+
+      console.log(action);
+      console.log(index);
+    },
     // 返回
     onClickLeft() {
       this.$router.go(-1);
     },
     onClickRight() {
-      Toast("按钮");
+      // Toast("按钮");
     },
     change(n) {
       console.log(n);
     },
+
     // 请求数据
     async cartlist() {
       const result = await reqCartlist();
       console.log(result);
       this.obj = result.data;
       console.log(this.products);
-      console.log(this.obj.length);
+      // console.log(this.obj.length);//判断购物车是否有商品
       if (this.obj.length == 0) {
         this.noProduct = true;
       } else {
         this.noProduct = false;
       }
     },
-    onSubmit() {
-      Toast.success({
-        message: "提交成功...",
-        // 跳转
-        forbidClick: true,
-        loadingType: "spinner",
+
+    //    提交订单 ！！！！！！！！
+    async onSubmit(subdata) {
+      const arr = this.obj.filter((item) => item.checked == true);
+      console.log(arr);
+      arr.forEach((item, i) => {
+        console.log("选中的商品", item, i);
+        // console.log(item.product._id);
+        // console.log(item.product.quantity);
+        // console.log(item.product.price);
+        this.subdata.orderDetails.push({
+          quantity: item.product.quantity,
+          product: item.product._id,
+          price: item.product.price,
+        });
+        // console.log(this.subdata.orderDetails);
       });
+      this.subdata.receiver = getToken();
+      console.log(this.carmodel);
+      this.subdata.regions = this.carmodel;
+      this.subdata.address = this.carmodel;
+      console.log(this.subdata);
+
+      let res = await subOrder(subdata);
+      console.log(res);
+      console.log(res.data.code == "success");
+      if (res.data.code == "success") {
+        Toast.success({
+          message: "提交成功",
+          // 跳转
+          forbidClick: true,
+          loadingType: "spinner",
+        });
+        this.$router.push("/settlement"); //跳转到订单详情页
+      } else {
+        Toast.fail({
+          message: "提交失败",
+          // 跳转
+          forbidClick: true,
+          loadingType: "spinner",
+        });
+      }
     },
+
     // 删除商品按钮
     async del(id) {
       const result = await delProduct(id);
@@ -180,6 +274,7 @@ export default {
     showPopup() {
       this.show = true;
     },
+
     //value=0改变省，1改变市，2改变区
     onChange(picker) {
       let val = picker.getValues();
@@ -190,11 +285,13 @@ export default {
       }
       this.carmodel = areaName;
     },
+
     //确定选择城市
     onConfirm(val) {
       console.log(val[0].name + "," + val[1].name + "," + val[2].name);
       this.show = false; //关闭弹框
     },
+
     //取消选中城市
     onCancel() {
       this.show = false;
@@ -231,15 +328,18 @@ export default {
       // this.$router.replace("/login");
     }
   },
+
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
   },
+
   beforeCreate() {},
   beforeMount() {},
   beforeUpdate() {},
   updated() {},
 };
 </script>
+
 <style scoped>
 * {
   margin: 0;
@@ -261,6 +361,15 @@ export default {
   margin-top: 10px;
   overflow: hidden;
 }
+/* 导航选项 */
+.van-popover--light {
+  z-index: 2111;
+  position: absolute;
+  left: 300px !important;
+  top: 45px;
+  margin: 0px;
+}
+
 .van-card {
   position: relative;
   box-sizing: border-box;

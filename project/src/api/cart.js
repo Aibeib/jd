@@ -8,3 +8,6 @@ export const reqCartlist = () => get('/api/v1/shop_carts')  //看api,不需要�
 
 //删除购物车商品
 export const delProduct = (id) => del(`/api/v1/shop_carts/${id}`)
+
+//提交订单
+export const subOrder = (data) => post(`/api/v1/orders`,data)
