@@ -52,7 +52,13 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
+
+  transition: all 1500ms;
+
   transition: all 500ms;
+
+  transition: all 500ms;
+
   position: absolute;
 }
 .slide-right-enter {
