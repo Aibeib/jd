@@ -103,6 +103,12 @@ import { Toast } from "vant";
 
 import { areaList } from "@vant/area-data";
 
+import Vue from "vue";
+import { Dialog } from "vant";
+
+// 全局注册
+Vue.use(Dialog);
+
 export default {
   components: {},
   data() {
@@ -281,13 +287,11 @@ export default {
 
     // 删除商品按钮
     async del(id) {
+      // on confirm
       const result = await delProduct(id);
       console.log(result);
-      this.cartlist(),
-        Toast.success({
-          message: "删除成功",
-          // 删除对应元素
-        });
+      this.cartlist();
+      console.log("删除成功");
 
       // console.log(this);
     },
