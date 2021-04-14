@@ -151,11 +151,9 @@ html {
   margin: 0 auto;
 }
 .van-cell {
-  padding: 20px 16px !important;
+  padding: 20px 16px;
 }
-.van-cell {
-  padding: 20px 16px !important;
-}
+
 .quick-btn {
   color: rgba(0, 0, 0, 0.4);
   font-size: 0.14rem;
@@ -176,7 +174,7 @@ html {
   text-align: center;
 }
 .van-grid-item {
-  border-radius: 50px !important;
+  border-radius: 50px ;
 }
 .quick-type {
   width: 325px;

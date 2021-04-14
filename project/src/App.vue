@@ -36,8 +36,6 @@ export default {
 </script>
 
 <style>
- 
-
 #app {
   width: 100%;
   height: 100%;
@@ -54,6 +52,8 @@ export default {
 .slide-left-enter-active,
 .slide-left-leave-active {
   will-change: transform;
+
+  transition: all 1500ms;
 
   transition: all 500ms;
 

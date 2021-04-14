@@ -49,6 +49,12 @@ const router = new VueRouter({
             }
         },
         {
+            path:'/classify',
+            name:"Classify",
+            component:() => import("../views/classify"),
+            meta:{
+                isShow:true
+            },
             path: '/classify',
             name: "Classify",
             component: () => import("../views/classify"),
@@ -116,6 +122,36 @@ const router = new VueRouter({
                 isShow: false
 
             }
+        },
+        {
+            path: '/settlement',
+            name: 'Settlement',
+            component: () => import("../views/settlement"),
+            meta: {
+                isShow: false
+
+            }
+
+        },
+        {
+            path: '/deal',
+            name: 'Deal',
+            component: () => import("../views/deal"),
+            meta: {
+                isShow: false
+
+            }
+
+        },
+        {
+            path: '/areaList',
+            name: 'AreaList',
+            component: () => import("../views/areaList"),
+            meta: {
+                isShow: false
+
+            }
+
         },
     ],
 

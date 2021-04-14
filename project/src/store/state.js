@@ -1,3 +1,4 @@
-export default{
-    active:0
+export default {
+    active: 0
+
 }

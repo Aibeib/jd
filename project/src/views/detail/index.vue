@@ -394,6 +394,9 @@ export default {
       // customSkuValidator: () => "lalla",
     };
   },
+  computed: {},
+  watch: {},
+
   methods: {
     order(id) {
       if (isLogined()) {
@@ -512,10 +515,16 @@ export default {
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
   },
+<<<<<<< HEAD
+=======
+
+  mounted() {},
+>>>>>>> 10ca8e95157c352c10c7606d8270d2a97809e58f
   beforeCreate() {},
   beforeMount() {},
   beforeUpdate() {},
   updated() {},
+
   beforeDestroy() {},
   destroyed() {},
   //如果页面有keep-alive缓存功能，这个函数会触发
