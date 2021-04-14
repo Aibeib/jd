@@ -2,11 +2,20 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
+
 import Vuex from 'vuex'
+
+import { Lazyload } from 'vant';
+
+
+Vue.use(Lazyload);
+
+
 import axios from "axios";
 import url from "../src/utils/url";
 
 import store from './store'
+
 
 
 Vue.use(Vant);

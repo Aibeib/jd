@@ -85,6 +85,15 @@ const router = new VueRouter({
 
             }
         },
+        {
+            path: '/settlement',
+            name: 'Settlement',
+            component: () => import("../views/settlement"),
+            meta: {
+                isShow: false
+
+            }
+        },
     ],
 
 
