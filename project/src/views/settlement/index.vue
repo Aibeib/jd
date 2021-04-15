@@ -255,4 +255,7 @@ export default {
   background-size: 100%;
   padding: 20px 10px;
 }
+.van-address-list__bottom {
+  display: none;
+}
 </style>
