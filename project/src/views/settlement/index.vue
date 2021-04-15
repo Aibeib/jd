@@ -37,12 +37,12 @@
           恭喜你,挑选的商品好评度高达100%
         </van-notice-bar>
         <ul>
-          <li v-if="shoplist">
+          <li v-for="v in shoplist" :key="v._id">
             <van-card
-              :price="shoplist.price"
-              :desc="shoplist.descriptions"
-              :title="shoplist.name"
-              :thumb="shoplist.coverImg"
+              :price="v.price"
+              :desc="v.descriptions"
+              :title="v.name"
+              :thumb="v.coverImg"
             >
               <template #footer>
                 <van-stepper v-model="value" />
@@ -128,7 +128,7 @@ export default {
         //   isDefault: true,
         // },
       ],
-      shoplist: null,
+      shoplist: [],
     };
   },
   computed: {},
@@ -137,15 +137,10 @@ export default {
   methods: {
     //获取单个订单信息
     async lists(id) {
-      console.log(id);
       const result = await reqProductDetail(id);
       console.log(result);
-      this.shoplist = result.data;
-      // get(`/api/v1/products/${id}`).then((res) => {
-      //   console.log(res);
-      //   this.shoplist = res.data.products;
-      //   console.log(this.shoplist);
-      // });
+      this.shoplist.push(result.data);
+      console.log(this.shoplist);
     },
     back() {
       this.$router.go(-1);
@@ -158,10 +153,7 @@ export default {
       var id = localStorage.getItem("itemid");
       this.chosenAddressId = id;
       let res = await AnAddress(id);
-      console.log(res);
       res.data = [res.data];
-
-      console.log(this.list);
       if (res.data) {
         res.data.forEach((item) => {
           this.list.push({
@@ -177,8 +169,26 @@ export default {
   created() {
     const id = this.$route.query.id;
     console.log(id);
-    this.lists(id);
-    console.log(id);
+
+    console.log(typeof id);
+    if (typeof id == "string") {
+      this.lists(id);
+    }
+    if (typeof id == "object") {
+      id.forEach((v) => {
+        console.log(v);
+        this.lists(v);
+      });
+    }
+    // if (id.length > 0) {
+    //   id.forEach((v) => {
+    //     console.log(v);
+    //     this.lists(v);
+    //   });
+    // } else {
+    //   this.lists(id);
+    // }
+
     this.getThisAddress();
   },
   mounted() {},
