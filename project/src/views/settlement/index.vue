@@ -169,14 +169,25 @@ export default {
   created() {
     const id = this.$route.query.id;
     console.log(id);
-    if (id.length > 0) {
+
+    console.log(typeof id);
+    if (typeof id == "string") {
+      this.lists(id);
+    }
+    if (typeof id == "object") {
       id.forEach((v) => {
         console.log(v);
         this.lists(v);
       });
-    } else {
-      this.lists(id);
     }
+    // if (id.length > 0) {
+    //   id.forEach((v) => {
+    //     console.log(v);
+    //     this.lists(v);
+    //   });
+    // } else {
+    //   this.lists(id);
+    // }
 
     this.getThisAddress();
   },
