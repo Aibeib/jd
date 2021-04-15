@@ -107,8 +107,8 @@
                 <div class="recomm_mod_title">
                     <span class="recomm_mod_title_text">为你推荐</span>
                 </div>
-                <div class="product_list">
-                    <div class="product-list" v-for="(item, index) in productlis" :key="index">
+                <div class="product_list" >
+                    <div class="product-list" v-for="(item, index) in productlis" :key="index" @click="todetail(item._id)">
                         <div class="product-img">
                             <img :src="item.coverImg" alt="">
                         </div>
@@ -205,6 +205,14 @@ export default {
         },
         onClickLeft(){
           this.$router.go(-1)
+        },
+        // 跳转详情
+        todetail(id){
+          this.$router.push({
+            path:'/detail',
+            query:{id}
+          })
+
         }
     },
     created() {
