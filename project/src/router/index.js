@@ -55,12 +55,6 @@ const router = new VueRouter({
             meta:{
                 isShow:true
             },
-            path: '/classify',
-            name: "Classify",
-            component: () => import("../views/classify"),
-            meta: {
-                isShow: true
-            }
         },
         {
 
@@ -71,14 +65,7 @@ const router = new VueRouter({
                 isShow: false
             }
         },
-        {
-            path: '/classify',
-            name: "Classify",
-            component: () => import("../views/classify"),
-            meta: {
-                isShow: true
-            },
-        },
+        
         {
 
             path: '/surprise',
@@ -112,6 +99,28 @@ const router = new VueRouter({
             component: () => import("../views/mines"),
             meta: {
                 isShow: true
+            }
+        },
+        {
+            path:'/myorder',
+            name:'Myorder',
+            component:() => import("../views/myorder"),
+            meta:{
+                isShow:true
+            },
+            children:[
+                {path:'/allorder',name:'Allorder',component:() => import("../views/myorder/allorder")},
+                {path:'/obligation',name:'Obligation',component:() => import("../views/myorder/obligation")},
+                {path:'/tobereceived',name:'Tobereceived',component:() => import("../views/myorder/tobereceived")},
+                {path:'/finshed',name:'Finshed',component:() => import("../views/myorder/finshed")},
+            ]
+        },
+        {
+            path:'/mymessage',
+            name:"Mymessage",
+            component: () => import("../views/mymessage"),
+            meta:{
+                isShow: false
             }
         },
         {

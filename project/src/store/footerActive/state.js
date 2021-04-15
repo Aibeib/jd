@@ -1,3 +1,3 @@
 export default {
-    active:0
+    active:0,mysec:0
 }
