@@ -106,7 +106,7 @@ const router = new VueRouter({
             name:'Myorder',
             component:() => import("../views/myorder"),
             meta:{
-                isShow:true
+                isShow:false
             },
             children:[
                 {path:'/allorder',name:'Allorder',component:() => import("../views/myorder/allorder")},

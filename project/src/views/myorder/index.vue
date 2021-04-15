@@ -1,8 +1,7 @@
 <template>
     <div class="myorder">
-       
         <div class="">
-           <van-nav-bar title="我的订单" left-text="" left-arrow>
+           <van-nav-bar title="我的订单" left-text="" left-arrow @click-left="onClickLeft" >
                 <template #right>
                     <van-icon name="ellipsis" size="18" />
                 </template>
@@ -54,7 +53,6 @@
 export default {
     components: {Allorder,Obligation,Tobereceived,Finshed},
     data() {
-        
         return {
             active: 0,
             value:'',
@@ -86,11 +84,14 @@ export default {
       changetag(index){
           this.changemyrouter(index)
           console.log(index)
-
+      },
+      onClickLeft(){
+          console.log(1111)
+          this.$router.go(-1)
       }
     },
     created() {
-        
+        console.log(this.$route.query.id)
     },
     mounted() {
         

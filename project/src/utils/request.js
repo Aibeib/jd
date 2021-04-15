@@ -7,6 +7,7 @@ const instance = axios.create({
   baseURL: serveUrl,
   timeout: 5000
 })
+
 instance.interceptors.request.use(
   function (config) {
     config.headers.authorization = "Bearer " + getToken();
@@ -30,6 +31,7 @@ export const get = (url, params) => instance.get(url, { params });
 
 export const post = (url, data) => instance.post(url, data);
 
+export const del = (url) => instance.delete(url);
 /*delete请求 */
 export const delate = (url, params) => instance.delete(url, { params });
 /*put请求*/
