@@ -8,3 +8,5 @@ export const reqProductDetail = (id) => get("/api/v1/products/" + id);
 
 //gouwuche
 export const reqAddcart = (data) => post("/api/v1/shop_carts", data);
+//购物车列表
+export const reqCartlist = () => get("/api/v1/shop_carts");
