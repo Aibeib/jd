@@ -401,7 +401,7 @@ export default {
     order(id) {
       if (isLogined()) {
         this.$router.push({
-          path: "/myorder",
+          path: "/settlement",
           query: { id },
         });
       } else {
