@@ -106,10 +106,6 @@ export default {
         })
         .then((res) => {
           console.log(res);
-<<<<<<< HEAD
-          setToken(res.data.token);
-          this.$router.push("/");
-=======
           if (res.status === 200) {
             setToken(res.data.token);
             Toast.loading({
@@ -123,7 +119,6 @@ export default {
               },
             });
           }
->>>>>>> master
         });
     },
     //第一个输入框的长度为11位，密码大于6位
