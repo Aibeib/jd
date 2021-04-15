@@ -106,6 +106,10 @@ export default {
         })
         .then((res) => {
           console.log(res);
+
+          setToken(res.data.token);
+          this.$router.push("/");
+
           if (res.status === 200) {
             setToken(res.data.token);
             Toast.loading({
