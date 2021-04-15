@@ -128,7 +128,7 @@ export default {
   watch: {},
 
   methods: {
-    list(id) {
+    lists(id) {
       this.$http
         .get(`http://localhost:3009/api/v1/orders/${id}`)
         .then((res) => {
@@ -149,7 +149,7 @@ export default {
   },
   created() {
     const id = this.$route.query.id;
-    this.list(id);
+    this.lists(id);
   },
   mounted() {},
   beforeCreate() {},
