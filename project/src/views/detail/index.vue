@@ -39,7 +39,13 @@
               <p>降价提醒</p>
             </div>
             <div>
-              <van-icon name="like-o" style="font-size: 25px" />
+              <van-rate
+                v-model="value4"
+                icon="like"
+                void-icon="like-o"
+                :count="1"
+                @change="onChange"
+              />
               <p>收藏</p>
             </div>
           </div>
@@ -177,8 +183,11 @@
         <van-cell @click="show8 = true" class="serve">
           <h3 style="font-size: 16px; font-weight: 900">已选</h3>
           <div style="width: 80%">
-            <p>lalalaa</p>
-            <p>本商品支持京东保障服务、京东服务+，点击可选服务</p>
+            <p v-if="flag6">深海微光4G版,6G+64G</p>
+            <p v-if="flag5">{{ new2 }}, {{ new3 }}</p>
+            <p style="margin-top: 10px">
+              本商品支持京东保障服务、京东服务+，点击可选服务
+            </p>
           </div>
           <van-icon name="ellipsis" />
         </van-cell>
@@ -202,7 +211,11 @@
                   >
                     ￥{{ obj.price }}
                   </p>
-                  <span>已选{{ obj.price }}</span>
+                  <span>{{ new2 }}</span>
+                  <span style="margin-left: 10px; margin-right: 10px">{{
+                    new3
+                  }}</span>
+                  <span>{{ value }}个</span>
                 </div>
               </div>
               <div class="xinghao">
@@ -210,12 +223,12 @@
                   <li>
                     <h3 style="font-weight: 900; margin-bottom: 15px">颜色</h3>
                     <van-button
-                      :color="color1"
                       round
                       type="info"
                       v-for="(item, index) in btn1"
+                      :color="ind == index ? color2 : color1"
                       :key="index"
-                      @click="change(index)"
+                      @click="change(index, item.b1)"
                       >{{ item.b1 }}</van-button
                     >
                     <!-- <van-button :color="color1" round type="info"
@@ -228,11 +241,12 @@
                   <li style="margin-top: 15px">
                     <h3 style="margin-bottom: 15px; font-weight: 900">版本</h3>
                     <van-button
-                      :color="color1"
+                      :color="ind2 == index ? color2 : color1"
                       round
                       type="info"
                       v-for="(item, index) in btn2"
                       :key="index"
+                      @click="change2(index, item.b1)"
                       >{{ item.b1 }}</van-button
                     >
                   </li>
@@ -316,7 +330,7 @@
         <van-goods-action>
           <van-goods-action-icon icon="shop-o" text="店铺" badge="0" />
           <van-goods-action-icon icon="chat-o" text="客服" dot />
-          <van-goods-action-icon icon="cart-o" text="购物车" badge="0" />
+          <van-goods-action-icon icon="cart-o" text="购物车" :badge="num" />
 
           <van-goods-action-button
             type="warning"
@@ -335,9 +349,10 @@
 </template>
 
 <script>
+import { reqCartlist } from "../../api/product";
 import { isLogined } from "../../utils/util";
 // import skuData from "../../data";
-import { Toast } from "vant";
+import { Form, Toast } from "vant";
 import { areaList } from "../../list";
 import { reqProductDetail } from "../../api/product";
 import { reqAddcart } from "../../api/product";
@@ -345,6 +360,12 @@ export default {
   components: {},
   data() {
     return {
+      value4: 0,
+      num: 0,
+      flag5: false,
+      flag6: true,
+      new2: "",
+      new3: "",
       btn1: [
         { b1: "深海微光 4G版" },
         { b1: "紫玉幻境 4G版" },
@@ -356,7 +377,10 @@ export default {
         { b1: "全网通8G+128G" },
       ],
       color1: "#999999",
+      color2: "red",
       value: 1,
+      ind: 0,
+      ind2: 0,
       // actions: [],
       show8: false,
       show5: false,
@@ -398,6 +422,10 @@ export default {
   watch: {},
 
   methods: {
+    onchange() {
+      this.value4 = 0;
+      console.log(1);
+    },
     order(id) {
       if (isLogined()) {
         this.$router.push({
@@ -412,13 +440,29 @@ export default {
       if (isLogined()) {
         const res = await reqAddcart({ product: id, quantity: this.value });
         console.log(res);
+        if (res.status == 200) {
+          Toast.success("成功加入购物车");
+          this.num++;
+        }
       } else {
         this.$router.push("/login");
       }
     },
-    change(index) {
+    change(index, kind) {
       // this.color1 = "red";
+      this.ind = index;
       console.log(index);
+      this.new2 = kind;
+      this.flag5 = true;
+      this.flag6 = false;
+    },
+    change2(index, kind) {
+      // this.color1 = "red";
+      this.ind2 = index;
+      console.log(index);
+      this.new3 = kind;
+      this.flag5 = true;
+      this.flag6 = false;
     },
     handleScroll() {
       let scrollTop = document.documentElement.scrollTop;
@@ -476,14 +520,6 @@ export default {
     del() {
       this.show = false;
     },
-    // onBuyClicked(data) {
-    //   this.$toast("buy:" + JSON.stringify(data));
-    //   console.log(JSON.stringify(data));
-    // },
-
-    // onAddCartClicked(data) {
-    //   this.$toast("add cart:" + JSON.stringify(data));
-    // },
 
     //地区选择
     changeAddr(picker) {
@@ -506,11 +542,19 @@ export default {
     showPopup() {
       this.show2 = true;
     },
+    async cart() {
+      if (isLogined()) {
+        const res = await reqCartlist();
+        console.log(res.data.length);
+        this.num = res.data.length;
+      }
+    },
   },
   created() {
     const id = this.$route.query.id;
     this.getDetail(id);
     this.handleScroll();
+    this.cart();
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -527,7 +571,10 @@ export default {
   activated() {},
 };
 </script>
-<style scoped>
+<style >
+.bottom-right .van-icon-cash-back-record {
+  font-size: 21px;
+}
 .xinghao .van-button {
   margin-right: 10px;
   margin-bottom: 10px;
