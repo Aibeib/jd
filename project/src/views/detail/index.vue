@@ -357,7 +357,7 @@
 import { reqCartlist } from "../../api/product";
 import { isLogined } from "../../utils/util";
 // import skuData from "../../data";
-import { Form, Toast } from "vant";
+import { Toast } from "vant";
 import { areaList } from "../../list";
 import { reqProductDetail } from "../../api/product";
 import { reqAddcart } from "../../api/product";

@@ -81,7 +81,7 @@ const router = new VueRouter({
             name: "Cart",
             component: () => import("../views/cart"),
             meta: {
-                isShow: true
+                isShow: false
             }
         },
         {

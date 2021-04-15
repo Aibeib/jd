@@ -44,13 +44,17 @@
 
 <script>
 import { get } from '../../../utils/request'
+import { reqProductDetail } from "../../../api/product"
 export default {
     
     components: {},
     data() {
         
         return {
-            desc:'你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好'
+            desc:'你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好你好',
+            productIds:[],
+
+            productlists:[]
         };
     },
     methods: {
@@ -58,6 +62,16 @@ export default {
         async getAllorder(){
           const result = await get('/api/v1/orders')
           console.log(result)
+          result.data.orders.forEach(res=>{
+              this.productIds.push(res._id)
+          })
+          console.log(this.productIds)
+
+          this.productIds.forEach(item=>{
+            reqProductDetail(item).then(res=>{
+                console.log(res)
+            })
+          })
         }
     },
     created() {
