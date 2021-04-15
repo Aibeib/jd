@@ -1,7 +1,7 @@
 <template>
   <div class="areaList">
     <div class="header">
-      <van-nav-bar title="收货地址" left-text="" left-arrow>
+      <van-nav-bar title="收货地址" left-text="" left-arrow @click-left="back">
         <template #right>
           <van-icon name="ellipsis" size="32" />
         </template>
@@ -43,14 +43,15 @@ export default {
   methods: {
     async onSave(res) {
       console.log(res);
-      await newAddress({
+      const result = await newAddress({
         receiver: res.name,
         mobile: res.tel,
         regions: res.province + "-" + res.county + "-" + res.city,
         address: res.addressDetail,
         isDefault: res.isDefault,
       });
-      this.$router.push("/settlement");
+      console.log(result);
+      this.$router.push("/deal");
       Toast("添加成功");
     },
     onDelete() {
@@ -67,6 +68,9 @@ export default {
       } else {
         this.searchResult = [];
       }
+    },
+    back() {
+      this.$router.go(-1);
     },
   },
   created() {},
