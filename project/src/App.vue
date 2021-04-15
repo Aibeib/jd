@@ -10,12 +10,18 @@
 </template>
 <script>
 import Footer from "./components/footer";
+import {mapMutations} from "vuex"
 export default {
   name: "App",
   data() {
     return {
       transitionName: "",
     };
+  },
+  methods:{
+    ...mapMutations({
+      changactive:"footerActive/setActive",
+    })
   },
   watch: {
     //使用watch 监听$router的变化
@@ -28,6 +34,20 @@ export default {
         this.transitionName = "slide-right";
       }
     },
+  },
+  created(){
+    if(this.$route.path == '/classify'){
+      this.changactive(1)
+    } else if(this.$route.path == '/home'){
+       this.changactive(0)
+    } else if(this.$route.path == '/mines'){
+       this.changactive(4)
+    } else if(this.$route.path == '/detail'){
+       this.changactive(2)
+    } else if(this.$route.path == '/cart'){
+       this.changactive(3)
+    }
+
   },
   components: {
     Footer,

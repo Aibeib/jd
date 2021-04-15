@@ -1,7 +1,7 @@
 <template>
     <div class="updatemessage">
          <div class="header">
-            <van-nav-bar title="账户设置" left-arrow>
+            <van-nav-bar title="账户设置" left-arrow @click-left="onClickLeft" >
                 <template #right>
                     <van-icon name="ellipsis" />
                 </template>
@@ -106,7 +106,7 @@
 import Vue from 'vue';
 import { ShareSheet } from 'vant';
 import { Toast } from 'vant';
-import { removeToken } from '../../utils/util'
+import { removeToken, getToken } from '../../utils/util'
 Vue.use(ShareSheet);
 export default {
     
@@ -123,12 +123,18 @@ export default {
             this.showShare = false;
         },
         addresslist(){
-            this.$.push('areaList')
+            this.$router.push('/areaList')
         },
         logout(){
             removeToken()
+            if( !getToken() ) {
+                this.$router.push('/')
+            }
         },
         editor(){
+        },
+        onClickLeft(){
+            this.$router.go(-1)
         }
     },
     created() {

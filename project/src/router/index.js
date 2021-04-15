@@ -87,6 +87,7 @@ const router = new VueRouter({
         {
             path: '/mine',
             name: "Mine",
+            redirect: '/login',
             component: () => import("../views/mine"),
             meta: {
                 isShow: true
