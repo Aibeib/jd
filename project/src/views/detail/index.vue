@@ -1,6 +1,20 @@
 <template>
   <div class="detail">
     <div class="header">
+      <div class="mask" v-show="show5">
+        <ul>
+          <li style="font-size: 25px">
+            <van-icon name="arrow-left" @click="bego" />
+          </li>
+          <li style="width: 60%; font-size: 16px">
+            <p>商品</p>
+            <p>评价</p>
+            <p>详情</p>
+            <p>推荐</p>
+          </li>
+          <li style="font-size: 25px"><van-icon name="ellipsis" /></li>
+        </ul>
+      </div>
       <van-icon name="arrow-left" @click="onClickLeft" class="left" />
       <van-swipe @change="onChange">
         <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -17,9 +31,7 @@
         <div class="box">
           <div style="padding-left: 20px">
             <span style="font-size: 15px; color: red">￥</span>
-            <span style="font-size: 25px; color: red">{{
-              products.price
-            }}</span>
+            <span style="font-size: 25px; color: red">{{ obj.price }}</span>
           </div>
           <div class="bottom-right" style="padding-right: 20px">
             <div style="margin-right: 10px">
@@ -37,7 +49,7 @@
           style="padding-left: 20px; padding-right: 20px; padding-top: 10px"
         >
           <a href="" style="font-size: 16px; font-weight: 900">{{
-            products.name
+            obj.descriptions
           }}</a>
           <p style="margin-top: 15px; font-size: 13px; line-height: 17px">
             【超值低价】5000mAh大电量，大屏幕大音量，人脸解锁【升级18W快充+线性扬声器，推荐】
@@ -162,37 +174,97 @@
     </div>
     <div class="adress">
       <div>
-        <div class="sku-container">
-          <van-sku
-            v-model="showBase"
-            :sku="skuData.sku"
-            :goods="skuData.goods_info"
-            :goods-id="skuData.goods_id"
-            :hide-stock="skuData.sku.hide_stock"
-            :quota="skuData.quota"
-            :quota-used="skuData.quota_used"
-            :initial-sku="initialSku"
-            reset-stepper-on-hide
-            reset-selected-sku-on-hide
-            disable-stepper-input
-            :close-on-click-overlay="closeOnClickOverlay"
-            :custom-sku-validator="customSkuValidator"
-            @buy-clicked="onBuyClicked"
-            @add-cart="onAddCartClicked"
-          >
-          </van-sku>
-          <!-- <van-button block type="primary" @click="showBase = true">
-            xxxx
-          </van-button> -->
-          <van-cell @click="showBase = true" class="kind">
-            <h3 style="font-weight: 900">已选</h3>
-            <div style="width: 80%; padding: 0 5px">
-              <p style="font-size: 9px">
-                本商品支持京东保障服务、京东服务+，点击可选服务
-              </p>
+        <van-cell @click="show8 = true" class="serve">
+          <h3 style="font-size: 16px; font-weight: 900">已选</h3>
+          <div style="width: 80%">
+            <p>lalalaa</p>
+            <p>本商品支持京东保障服务、京东服务+，点击可选服务</p>
+          </div>
+          <van-icon name="ellipsis" />
+        </van-cell>
+        <div>
+          <van-action-sheet v-model="show8" title="标题">
+            <div class="content4">
+              <div class="con-1">
+                <img
+                  :src="obj.coverImg"
+                  alt=""
+                  style="width: 100px; height: 100px"
+                />
+                <div style="margin-left: 15px">
+                  <p
+                    style="
+                      font-size: 20px;
+                      color: red;
+                      margin-bottom: 20px;
+                      margin-top: 20px;
+                    "
+                  >
+                    ￥{{ obj.price }}
+                  </p>
+                  <span>已选{{ obj.price }}</span>
+                </div>
+              </div>
+              <div class="xinghao">
+                <ul>
+                  <li>
+                    <h3 style="font-weight: 900; margin-bottom: 15px">颜色</h3>
+                    <van-button
+                      :color="color1"
+                      round
+                      type="info"
+                      v-for="(item, index) in btn1"
+                      :key="index"
+                      @click="change(index)"
+                      >{{ item.b1 }}</van-button
+                    >
+                    <!-- <van-button :color="color1" round type="info"
+                      >紫玉幻境 4G版</van-button
+                    >
+                    <van-button :color="color1" round type="info"
+                      >花影惊鸿 4G版</van-button
+                    > -->
+                  </li>
+                  <li style="margin-top: 15px">
+                    <h3 style="margin-bottom: 15px; font-weight: 900">版本</h3>
+                    <van-button
+                      :color="color1"
+                      round
+                      type="info"
+                      v-for="(item, index) in btn2"
+                      :key="index"
+                      >{{ item.b1 }}</van-button
+                    >
+                  </li>
+                  <li style="display: flex; justify-content: space-between">
+                    <span
+                      style="
+                        font-weight: 900;
+                        font-size: 15px;
+                        margin-top: 10px;
+                      "
+                      >数量</span
+                    >
+                    <van-stepper v-model="value"></van-stepper>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <van-goods-action>
+                  <van-goods-action-button
+                    type="warning"
+                    text="加入购物车"
+                    @click="btnclick(obj._id)"
+                  />
+                  <van-goods-action-button
+                    type="danger"
+                    text="立即购买"
+                    @click="order(obj._id)"
+                  />
+                </van-goods-action>
+              </div>
             </div>
-            <van-icon name="ellipsis" />
-          </van-cell>
+          </van-action-sheet>
         </div>
       </div>
       <div class="live" style="margin-top: 30px">
@@ -249,9 +321,13 @@
           <van-goods-action-button
             type="warning"
             text="加入购物车"
-            @cilck="gocart"
+            @click="gocart"
           />
-          <van-goods-action-button type="danger" text="立即购买" />
+          <van-goods-action-button
+            type="danger"
+            text="立即购买"
+            @click="order(obj._id)"
+          />
         </van-goods-action>
       </div>
     </div>
@@ -259,14 +335,31 @@
 </template>
 
 <script>
-import skuData from "../../data";
+import { isLogined } from "../../utils/util";
+// import skuData from "../../data";
 import { Toast } from "vant";
 import { areaList } from "../../list";
 import { reqProductDetail } from "../../api/product";
+import { reqAddcart } from "../../api/product";
 export default {
   components: {},
   data() {
     return {
+      btn1: [
+        { b1: "深海微光 4G版" },
+        { b1: "紫玉幻境 4G版" },
+        { b1: "花影惊鸿 4G版" },
+      ],
+      btn2: [
+        { b1: "6G+64G" },
+        { b1: "全网通6G+128G" },
+        { b1: "全网通8G+128G" },
+      ],
+      color1: "#999999",
+      value: 1,
+      // actions: [],
+      show8: false,
+      show5: false,
       obj: {},
       show2: false, //是否显示弹出层
       detailAddress: "", //绑定详细地址输入框
@@ -279,44 +372,86 @@ export default {
         "https://img0.baidu.com/it/u=2134477487,160184881&fm=26&fmt=auto&gp=0.jpg",
       ],
       current: 0,
-      products: {
-        name:
-          "Redmi 9A 5000mAh大电量 大屏幕大字体大音量 1300万AI相机 八核处理器 人脸解锁 4GB+64GB 砂石黑 游戏智能手机 小米 红米",
-        price: "789.00",
-      },
+      // products: {
+      //   name:
+      //     "Redmi 9A 5000mAh大电量 大屏幕大字体大音量 1300万AI相机 八核处理器 人脸解锁 4GB+64GB 砂石黑 游戏智能手机 小米 红米",
+      //   price: "789.00",
+      // },
       show: false,
       find: false,
       show1: false,
-      skuData: skuData,
-      showBase: true,
-      showCustom: false,
-      showStepper: false,
-      showSoldout: false,
-      closeOnClickOverlay: true,
-      initialSku: {
-        s1: "30349",
-        s2: "1193",
-        selectedNum: 3,
-      },
-      customSkuValidator: () => "lalla",
+      // skuData: skuData,
+      // showBase: false,
+      // showCustom: false,
+      // showStepper: false,
+      // showSoldout: false,
+      // closeOnClickOverlay: true,
+      // initialSku: {
+      //   s1: "30349",
+      //   s2: "1193",
+      //   selectedNum: 3,
+      // },
+      // customSkuValidator: () => "lalla",
     };
   },
   computed: {},
   watch: {},
 
   methods: {
+    order(id) {
+      if (isLogined()) {
+        this.$router.push({
+          path: "/myorder",
+          query: { id },
+        });
+      } else {
+        this.$router.push("/login");
+      }
+    },
+    async btnclick(id) {
+      if (isLogined()) {
+        const res = await reqAddcart({ product: id, quantity: this.value });
+        console.log(res);
+      } else {
+        this.$router.push("/login");
+      }
+    },
+    change(index) {
+      // this.color1 = "red";
+      console.log(index);
+    },
+    handleScroll() {
+      let scrollTop = document.documentElement.scrollTop;
+      //console.log(document.documentElement.scrollTop);
+      if (scrollTop > 40) {
+        this.show5 = true;
+      } else {
+        this.show5 = false;
+      }
+    },
     async getDetail(id) {
       const res = await reqProductDetail(id);
       console.log(res);
       if (res.status == 200) {
-        this.obj = res.products;
+        this.obj = res.data;
+        console.log(this.obj);
+        this.images.unshift(this.obj.coverImg);
+        // console.log();
       }
     },
     gocart() {
+      // if (isLogined) {
+      //   const result = await reqAddcart({ product: id });
+      // }
+      this.show8 = true;
+      console.log(1);
       // this.$router.push('/cart')
     },
     onClickLeft() {
-      console.log(11);
+      this.$router.back();
+    },
+    bego() {
+      this.$router.back();
     },
     onClickRight() {
       console.log(22);
@@ -328,22 +463,27 @@ export default {
       // 默认情况下点击选项时不会自动收起
       // 可以通过 close-on-click-action 属性开启自动收起
       this.show = false;
+      // this.show8 = false;
       Toast(item.name);
     },
+    // onSelect1() {
+    //   this.show8 = false;
+    //   console.log(22);
+    // },
     onCancel() {
       Toast("取消");
     },
     del() {
       this.show = false;
     },
-    onBuyClicked(data) {
-      this.$toast("buy:" + JSON.stringify(data));
-      console.log(JSON.stringify(data));
-    },
+    // onBuyClicked(data) {
+    //   this.$toast("buy:" + JSON.stringify(data));
+    //   console.log(JSON.stringify(data));
+    // },
 
-    onAddCartClicked(data) {
-      this.$toast("add cart:" + JSON.stringify(data));
-    },
+    // onAddCartClicked(data) {
+    //   this.$toast("add cart:" + JSON.stringify(data));
+    // },
 
     //地区选择
     changeAddr(picker) {
@@ -368,11 +508,14 @@ export default {
     },
   },
   created() {
-    const id = this.$route.params.id;
+    const id = this.$route.query.id;
     this.getDetail(id);
+    this.handleScroll();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
   },
 
-  mounted() {},
   beforeCreate() {},
   beforeMount() {},
   beforeUpdate() {},
@@ -384,7 +527,52 @@ export default {
   activated() {},
 };
 </script>
-<style >
+<style scoped>
+.xinghao .van-button {
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+.xinghao {
+  margin-top: 15px;
+}
+.con-1 {
+  display: flex;
+  align-items: center;
+}
+.serve {
+  display: flex;
+  justify-content: space-around;
+  /* align-items: center; */
+}
+.content4 {
+  padding: 16px 16px 160px;
+}
+.header {
+  position: relative;
+}
+.mask {
+  border-bottom: solid 1px #999999;
+  width: 100%;
+  height: 40px;
+  z-index: 200;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: white;
+}
+.mask ul {
+  height: 40px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+.mask ul li {
+  display: flex;
+  justify-content: space-between;
+}
+/* .mask ul li p {
+  text-align: center;
+} */
 .sku-container .kind {
   display: flex;
   justify-content: space-between;
@@ -472,7 +660,7 @@ export default {
   left: 10px;
   top: 10px;
   font-size: 30px;
-  color: white;
+  color: #999;
   z-index: 100;
 }
 .header .right {
@@ -480,7 +668,7 @@ export default {
   right: 10px;
   top: 10px;
   font-size: 30px;
-  color: white;
+  color: #999;
 }
 .custom-indicator {
   text-align: center;
