@@ -53,7 +53,6 @@
 export default {
     components: {Allorder,Obligation,Tobereceived,Finshed},
     data() {
-        
         return {
             active: 0,
             value:'',
