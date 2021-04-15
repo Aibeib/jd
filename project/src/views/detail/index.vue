@@ -401,7 +401,7 @@ export default {
     order(id) {
       if (isLogined()) {
         this.$router.push({
-          path: "/myorder",
+          path: "/settlement",
           query: { id },
         });
       } else {
@@ -527,7 +527,7 @@ export default {
   activated() {},
 };
 </script>
-<style scoped>
+<style >
 .xinghao .van-button {
   margin-right: 10px;
   margin-bottom: 10px;

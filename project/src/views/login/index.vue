@@ -104,7 +104,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
-          setToken(res.token);
+          setToken(res.data.token);
           this.$router.push("/");
         });
     },
