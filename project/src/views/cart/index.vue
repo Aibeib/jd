@@ -127,6 +127,7 @@ export default {
       radio: "1",
 
       havesubmit: true,
+      active: 3, //底部导航
 
       // 城市
       areaList,
@@ -348,6 +349,10 @@ export default {
     // } else {
     //   this.havesubmit = true;
     // }
+    console.log(this.$router);
+    console.log(this.$route);
+    this.$router.push("/cart");
+
     console.log(getToken());
     if (getToken()) {
       //如果登录
