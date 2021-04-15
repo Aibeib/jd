@@ -95,7 +95,7 @@ export default {
       this.downIcon = !this.downIcon;
     },
     //登录请求
-    login() {
+   async login() {
       const userName = this.phone;
       const password = this.password;
       const that = this;
@@ -106,6 +106,10 @@ export default {
         })
         .then((res) => {
           console.log(res);
+
+          setToken(res.data.token);
+          this.$router.push("/");
+
           if (res.status === 200) {
             setToken(res.data.token);
             Toast.loading({
