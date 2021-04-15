@@ -95,7 +95,7 @@ export default {
       this.downIcon = !this.downIcon;
     },
     //登录请求
-    login() {
+   async login() {
       const userName = this.phone;
       const password = this.password;
       const that = this;

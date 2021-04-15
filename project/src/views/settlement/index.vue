@@ -129,7 +129,6 @@ export default {
 
   methods: {
     //获取单个订单信息
-
     lists(id) {
       this.$http
         .get(`http://localhost:3009/api/v1/orders/${id}`)
