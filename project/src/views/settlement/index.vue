@@ -169,7 +169,7 @@ export default {
   created() {
     const id = this.$route.query.id;
     console.log(id);
-    if (id > 0) {
+    if (id.length > 0) {
       id.forEach((v) => {
         console.log(v);
         this.lists(v);
