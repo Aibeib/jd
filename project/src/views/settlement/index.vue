@@ -178,6 +178,7 @@ export default {
     const id = this.$route.query.id;
     console.log(id);
     this.lists(id);
+    console.log(this.$route.query.id);
     console.log(id);
     this.getThisAddress();
   },

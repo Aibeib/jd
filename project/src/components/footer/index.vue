@@ -1,14 +1,3 @@
-二月天 2021/4/13 20:14:18
-https://blog.csdn.net/Steven_Son/article/details/109816971
-
-603322483 2021/4/13 20:14:34
-我们已经是好友啦，一起来聊天吧！
-
-尚振伟 11:21:38
-
-.
-
-尚振伟 11:29:01
 <template>
   <div class="footer">
     <van-tabbar

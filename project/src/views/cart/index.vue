@@ -96,6 +96,8 @@ import { getToken } from "../../utils/util"; //引入封装的方法（判断登
 import { reqCartlist } from "../../api/cart";
 import { delProduct } from "../../api/cart"; //引入删除购物车商品接口
 
+// import { reqAddcart } from "../../api/product"; //引入添加购物车商品接口
+
 // import { serveUrl } from "../../utils/common";
 // import { get } from "../../utils/request";
 import { Toast } from "vant";
@@ -137,6 +139,9 @@ export default {
       noProduct: false,
       flag_scroll: false,
       scroll: 0,
+
+      productsID: [], //提交订单，订单商品id
+
       subdata: {
         receiver: "", // 收货人
         regions: "", // 收货的省市区县
@@ -243,6 +248,12 @@ export default {
         // console.log(item.product._id);
         // console.log(item.product.quantity);
         // console.log(item.product.price);
+
+        // console.log(item.product._id);
+        // console.log(this.productsID);
+        this.productsID.push(item.product._id); // 存，订单里的商品id
+        console.log(this.productsID);
+
         this.subdata.orderDetails.push({
           quantity: item.product.quantity,
           product: item.product._id,
@@ -274,7 +285,11 @@ export default {
             forbidClick: true,
             loadingType: "spinner",
           });
-          this.$router.push("/settlement"); //跳转到订单详情页
+
+          this.$router.push({
+            path: "/settlement",
+            query: { id: this.productsID },
+          }); //跳转到订单详情页（携带商品{id}）
         } else {
           Toast.fail({
             message: "提交失败",
@@ -304,7 +319,7 @@ export default {
     //value=0改变省，1改变市，2改变区
     onChange(picker) {
       let val = picker.getValues();
-      console.log(val); //查看打印
+      // console.log(val); //查看打印
       let areaName = "";
       for (var i = 0; i < val.length; i++) {
         areaName = areaName + (i == 0 ? "" : "") + val[i].name;
@@ -349,14 +364,13 @@ export default {
     // } else {
     //   this.havesubmit = true;
     // }
-    console.log(this.$router);
-    console.log(this.$route);
+    // console.log(this.$router);
+    // console.log(this.$route);
     this.$router.push("/cart");
 
-    console.log(getToken());
+    // console.log(getToken());
     if (getToken()) {
       //如果登录
-      console.log(getToken());
       console.log("已登录");
       this.cartlist();
     } else {
