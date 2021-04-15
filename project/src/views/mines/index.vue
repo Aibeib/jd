@@ -1,7 +1,7 @@
 <template>
     <div class="mines">
         <div class="header">
-            <van-nav-bar title="我的京东" left-arrow>
+            <van-nav-bar title="我的京东" left-arrow @click-left="onClickLeft">
                 <template #right>
                     <van-icon name="ellipsis" />
                 </template>
@@ -106,18 +106,17 @@
             <div class="productlist">
                 <div class="recomm_mod_title">
                     <span class="recomm_mod_title_text">为你推荐</span>
-
                 </div>
                 <div class="product_list">
-                    <div class="product-list" v-for="item in 10" :key="item">
+                    <div class="product-list" v-for="(item, index) in productlis" :key="index">
                         <div class="product-img">
-                            <img src="https://m.360buyimg.com/mobilecms/s750x750_jfs/t1/138184/38/13152/166172/60449dd5E9ef19147/feceb8d209237e57.jpg!q80.dpg.webp" alt="">
+                            <img :src="item.coverImg" alt="">
                         </div>
                         <div class="product-desc">
                             <p>
-                                媛妲2021夏装新款圆领短款宽松套头针
+                                {{item.descriptions}}
                             </p>
-                            <span>￥ <em>68</em> </span>
+                            <span>￥ <em>{{item.price}}</em> </span>
                         </div>
                     </div>
                 </div>
@@ -126,7 +125,6 @@
         <!-- 回到顶部 -->
         <div class="backHead" ref="top" style="display:none" >
             <a href="###"><van-icon name="back-top" /></a>
-            
         </div>
     </div>
 </template>
@@ -135,6 +133,7 @@
 import Vue from 'vue';
 import { NavBar } from 'vant';
 import { Skeleton } from 'vant';
+import { get } from '../../utils/request'
 
 import { Grid, GridItem } from 'vant';
 import { mapMutations }  from 'vuex'
@@ -159,12 +158,24 @@ export default {
                 {url:'https://img12.360buyimg.com/img/s70x70_jfs/t1/126073/34/9502/6741/5f350800Ee00c0d35/43485badf62439e9.png.webp',title:'高价回收',path:''},
                 {url:'https://img12.360buyimg.com/img/s72x72_jfs/t1/116298/31/20078/7059/5f84162fE19dfc541/2a00f0157c5128a2.png.webp',title:'定期购',path:''},
             ],
+            productlis:[],
             scroll_top:0,
             flag:false
         };
     },
     methods: {
+
+
+      // 获取商品列表
+     async getproductlist(){
+          const result = await get('/api/v1/products')
+          console.log(result)
+          this.productlis = result.data.products
+          console.log(this.productlis)
+      },
         // 点击服务跳转路由
+
+        
         toPath(path){
             console.log(path)
         },
@@ -191,11 +202,14 @@ export default {
         // 跳转到我的信息
         tomymessage(){
             this.$router.push('/mymessage')
+        },
+        onClickLeft(){
+          this.$router.go(-1)
         }
-
     },
     created() {
         this.changeactive(4)
+        this.getproductlist()
     },
     mounted() {
         

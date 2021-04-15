@@ -76,6 +76,7 @@
 
 <script>
 import { setToken } from "../../utils/util";
+import { post } from "../../utils/request"
 export default {
   components: {},
   data() {
@@ -94,19 +95,22 @@ export default {
       this.downIcon = !this.downIcon;
     },
     //登录请求
-    login() {
+   async login() {
       const userName = this.phone;
       const password = this.password;
-      this.$http
-        .post("http://localhost:3009/api/v1/auth/login", {
-          userName,
-          password,
-        })
-        .then((res) => {
-          console.log(res);
-          setToken(res.token);
-          this.$router.push("/");
-        });
+      // this.$http
+      //   .post("http://localhost:3009/api/v1/auth/login", {
+      //     userName,
+      //     password,
+      //   })
+      //   .then((res) => {
+      //     console.log(res);
+      //     setToken(res.data.token);
+      //     // this.$router.push("/");
+      //   });
+     const result = await post('/api/v1/auth/login',{userName,password})
+     console.log(result)
+     setToken(result.data.token) 
     },
     //第一个输入框的长度为11位，密码大于6位
     upclass() {
