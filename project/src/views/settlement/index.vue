@@ -153,6 +153,7 @@ export default {
   created() {
     const id = this.$route.query.id;
     this.lists(id);
+    console.log(id);
   },
   mounted() {},
   beforeCreate() {},
