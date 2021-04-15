@@ -102,7 +102,7 @@ import { delProduct } from "../../api/cart"; //引入删除购物车商品接口
 // import { get } from "../../utils/request";
 import { Toast } from "vant";
 // yarn add @vant/area-data;
-
+import { mapMutations } from "vuex";
 import { areaList } from "@vant/area-data";
 
 import Vue from "vue";
@@ -184,6 +184,10 @@ export default {
   watch: {},
 
   methods: {
+    ...mapMutations({
+      changeactive: "footerActive/setActive",
+    }),
+
     infbuttons(action, index) {
       switch (index) {
         case 0:
@@ -358,6 +362,7 @@ export default {
   },
 
   created() {
+    this.changeactive(3);
     // let arr = this.obj.filter((item) => item.checked == true);
     // if (arr.length == 0) {
     //   this.havesubmit = false;
@@ -375,7 +380,7 @@ export default {
       this.cartlist();
     } else {
       Toast.fail("请登录"); //vant 文档组件
-      // this.$router.replace("/login");
+      this.$router.replace("/login");
     }
   },
 
