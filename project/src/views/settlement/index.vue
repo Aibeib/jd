@@ -128,6 +128,8 @@ export default {
   watch: {},
 
   methods: {
+    //获取单个订单信息
+
     lists(id) {
       this.$http
         .get(`http://localhost:3009/api/v1/orders/${id}`)
@@ -142,6 +144,7 @@ export default {
     onEdit(item, index) {
       Toast("编辑地址:" + index);
     },
+    //获取单个收货地址信息
     async getThisAddress() {
       let res = await AnAddress(this.$route.query.id);
       console.log(res);

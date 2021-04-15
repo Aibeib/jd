@@ -76,6 +76,7 @@
 
 <script>
 import { setToken } from "../../utils/util";
+import { Toast } from "vant";
 export default {
   components: {},
   data() {
@@ -97,6 +98,7 @@ export default {
     login() {
       const userName = this.phone;
       const password = this.password;
+      const that = this;
       this.$http
         .post("http://localhost:3009/api/v1/auth/login", {
           userName,
@@ -104,13 +106,28 @@ export default {
         })
         .then((res) => {
           console.log(res);
+
           setToken(res.data.token);
           this.$router.push("/");
+
+          if (res.status === 200) {
+            setToken(res.data.token);
+            Toast.loading({
+              message: "加载中...",
+              forbidClick: true,
+              onOpened() {
+                setTimeout(() => {
+                  Toast.success("登录成功");
+                  that.$router.push("/");
+                }, 2000);
+              },
+            });
+          }
         });
     },
     //第一个输入框的长度为11位，密码大于6位
     upclass() {
-      if (this.phone.length == 11 && this.password.length >= 6) {
+      if (this.phone.length >= 1 && this.password.length >= 6) {
         this.active = true;
       } else {
         this.active = false;
@@ -239,7 +256,7 @@ html {
   text-align: center;
 }
 .van-grid-item {
-  border-radius: 50px !important;
+  border-radius: 50px;
 }
 .quick-type {
   width: 325px;

@@ -46,7 +46,7 @@ export default {
       await newAddress({
         receiver: res.name,
         mobile: res.tel,
-        regions: res.province + "-" + res.county,
+        regions: res.province + "-" + res.county + "-" + res.city,
         address: res.addressDetail,
         isDefault: res.isDefault,
       });
