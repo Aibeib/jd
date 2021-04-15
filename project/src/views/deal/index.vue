@@ -1,7 +1,7 @@
 <template>
   <div class="deal">
     <div class="header">
-      <van-nav-bar title="收货地址" left-text="" left-arrow>
+      <van-nav-bar title="收货地址" left-text="" left-arrow @click-left="back">
         <template #right>
           <van-icon name="ellipsis" size="32" />
         </template>
@@ -11,6 +11,7 @@
       <ul>
         <li>
           <van-address-list
+            :checked="true"
             v-model="chosenAddressId"
             :list="list"
             :disabled-list="disabledList"
@@ -18,6 +19,7 @@
             default-tag-text="默认"
             @add="onAdd"
             @edit="onEdit"
+            @select="dz"
           />
         </li>
       </ul>
@@ -27,48 +29,92 @@
 
 <script>
 import { Toast } from "vant";
+import { addList, delAddress } from "../../utils/userInfo";
+import { Dialog } from "vant";
 export default {
   components: {},
   data() {
     return {
       chosenAddressId: "1",
-      list: [
-        {
-          id: "1",
-          name: "张三",
-          tel: "13000000000",
-          address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室",
-          isDefault: true,
-        },
-        {
-          id: "2",
-          name: "李四",
-          tel: "1310000000",
-          address: "浙江省杭州市拱墅区莫干山路 50 号",
-        },
-      ],
+      id: "",
+      list: [],
       disabledList: [
         {
           id: "3",
-          name: "王五",
-          tel: "1320000000",
-          address: "浙江省杭州市滨江区江南大道 15 号",
+          name: "吴松二郎",
+          tel: "13854385438",
+          address: "小日本大儿子市我孙子县",
         },
       ],
+      isDefault: false,
     };
   },
   computed: {},
   watch: {},
 
   methods: {
+    //获取收货地址列表
+    async getaddressList() {
+      const res = await addList();
+      console.log(res);
+      // this.list = res.data.addresses;
+      res.data.addresses.forEach((item) => {
+        this.list.push({
+          id: item._id,
+          name: item.receiver,
+          address: item.regions + "-" + item.address,
+          tel: item.mobile,
+          isDefault: item.isDefault,
+        });
+      });
+      if (this.list[0].isDefault == true) {
+        for (var i = 1; i <= this.list.length; i++) {
+          this.list[i].isDefault = false;
+        }
+      }
+      this.list.forEach((item) => {});
+      console.log(this.list);
+    },
+    //跳转新增地址
     onAdd() {
       this.$router.push("/areaList");
     },
+    //编辑收货地址
     onEdit(item, index) {
-      Toast("编辑地址:" + index);
+      console.log(item.id);
+      var id = (this.id = item.id);
+      // Toast("编辑地址:" + index);
+      Dialog.confirm({
+        title: "删除",
+        message: "是否要删除这个地址",
+      })
+        .then(async () => {
+          console.log(this.id);
+          // on confirm
+          await delAddress(this.id);
+          this.list.forEach((v, i) => {
+            if (v.id == id) {
+              this.list.splice(i, 1);
+            }
+          });
+        })
+        .catch(() => {
+          // on cancel
+        });
+    },
+    //设置默认地址
+    dz(item) {
+      console.log(item.id);
+      this.$router.push("/settlement");
+      localStorage.setItem("itemid", item.id);
+    },
+    back() {
+      this.$router.go(-1);
     },
   },
-  created() {},
+  created() {
+    this.getaddressList();
+  },
   mounted() {},
   beforeCreate() {},
   beforeMount() {},

@@ -11,13 +11,14 @@
     <div class="content">
       <!-- 收货地址 -->
       <div class="dz">
-        <!-- <van-cell
+        <van-cell
+          v-if="!list.length"
           title="添加收货地址"
           is-link
           to="deal"
           icon="location-o"
-          border="false"
-        /> -->
+          :border="false"
+        />
         <van-address-list
           v-model="chosenAddressId"
           :list="list"
@@ -35,18 +36,21 @@
         >
           恭喜你,挑选的商品好评度高达100%
         </van-notice-bar>
-        <van-card
-          price="79.00"
-          desc="
-            白色，2XL
-        "
-          title="三福2021夏季男满版中文字短袖T恤 韩版休闲上衣438566 白色 2XL"
-          thumb="//img10.360buyimg.com/mobilecms/s117x117_jfs/t1/159640/34/19020/306292/60765881E5c1ed5a9/0cb641a3eb4276a1.jpg!q70.dpg.webp"
-        >
-          <template #footer>
-            <van-stepper v-model="value" />
-          </template>
-        </van-card>
+        <ul>
+          <li v-if="shoplist">
+            <van-card
+              :price="shoplist.price"
+              :desc="shoplist.descriptions"
+              :title="shoplist.name"
+              :thumb="shoplist.coverImg"
+            >
+              <template #footer>
+                <van-stepper v-model="value" />
+              </template>
+            </van-card>
+          </li>
+        </ul>
+
         <van-cell-group :border="false">
           <van-cell
             title="配送"
@@ -106,6 +110,8 @@
 <script>
 import { Toast } from "vant";
 import { AnAddress } from "../../utils/userInfo";
+import { get } from "../../utils/request";
+import { reqProductDetail } from "../../api/product";
 export default {
   components: {},
   data() {
@@ -114,14 +120,15 @@ export default {
       obj: null,
       chosenAddressId: "1",
       list: [
-        {
-          id: "1",
-          name: "张三",
-          tel: "13000000000",
-          address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室",
-          isDefault: true,
-        },
+        // {
+        //   id: "1",
+        //   name: "张三",
+        //   tel: "13000000000",
+        //   address: "浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室",
+        //   isDefault: true,
+        // },
       ],
+      shoplist: null,
     };
   },
   computed: {},
@@ -129,29 +136,50 @@ export default {
 
   methods: {
     //获取单个订单信息
-    lists(id) {
-      this.$http
-        .get(`http://localhost:3009/api/v1/orders/${id}`)
-        .then((res) => {
-          console.log(res);
-          this.obj = res.data;
-        });
+    async lists(id) {
+      console.log(id);
+      const result = await reqProductDetail(id);
+      console.log(result);
+      this.shoplist = result.data;
+      // get(`/api/v1/products/${id}`).then((res) => {
+      //   console.log(res);
+      //   this.shoplist = res.data.products;
+      //   console.log(this.shoplist);
+      // });
     },
     back() {
       this.$router.go(-1);
     },
     onEdit(item, index) {
-      Toast("编辑地址:" + index);
+      this.$router.push("/deal");
     },
-    //获取单个收货地址信息
+    //获取单个地址信息
     async getThisAddress() {
-      let res = await AnAddress(this.$route.query.id);
+      var id = localStorage.getItem("itemid");
+      this.chosenAddressId = id;
+      let res = await AnAddress(id);
       console.log(res);
+      res.data = [res.data];
+
+      console.log(this.list);
+      if (res.data) {
+        res.data.forEach((item) => {
+          this.list.push({
+            id: item._id,
+            name: item.receiver,
+            address: item.regions + "-" + item.address,
+            tel: item.mobile,
+          });
+        });
+      }
     },
   },
   created() {
     const id = this.$route.query.id;
+    console.log(id);
     this.lists(id);
+    console.log(id);
+    this.getThisAddress();
   },
   mounted() {},
   beforeCreate() {},
@@ -173,11 +201,11 @@ export default {
 }
 .dz {
   background: #fff
-    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAAKBAMAAACOO0tGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///4u16Oxtbezz/J3B7NDh9vSmprjS8vGNjfjDw/vd3f7w8O57e0EOI68AAABSSURBVCjPY2CAAE4l7GACVJ4hUBArEIXJL8KuXw0mz4xdv2ABVJ77EHYDGmAGmGDXLwKT58CuX2cDTIEjdgOcYfJJ2A3Qgsmz4/CBwWgQUiMIAXzCOFELLk/nAAAAAElFTkSuQmCC) -7px
+    url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAAAKBAMAAACOO0tGAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAnUExURf///4u16Oxtbezz/J3B7NDh9vSmprjS8vGNjfjDw/vd3f7w8O57e0EOI68AAABSSURBVCjPY2CAAE4l7GACVJ4hUBArEIXJL8KuXw0mz4xdv2ABVJ77EHYDGmAGmGDXLwKT58CuX2cDTIEjdgOcYfJJ2A3Qgsmz4/CBwWgQUiMIAXzCOFELLk/nAAAAAElFTkSuQmCC) -20px
     bottom repeat-x;
   background-size: 64px 5px;
-
   position: relative;
+  padding-bottom: 20px;
 }
 .van-address-list {
   padding: 0;
@@ -254,5 +282,8 @@ export default {
     no-repeat center;
   background-size: 100%;
   padding: 20px 10px;
+}
+.van-address-list__bottom {
+  display: none;
 }
 </style>
