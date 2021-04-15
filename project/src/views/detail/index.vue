@@ -428,8 +428,11 @@ export default {
 
   methods: {
     onClickIcon1() {
-      console.log(1);
-      this.$router.push("/cart");
+      if (isLogined()) {
+        this.$router.push("/cart");
+      } else {
+        this.$router.push("/login");
+      }
     },
     onchange() {
       this.value4 = 0;
@@ -452,6 +455,7 @@ export default {
         if (res.status == 200) {
           Toast.success("成功加入购物车");
           this.num++;
+          this.show8 = false;
         }
       } else {
         this.$router.push("/login");
@@ -580,7 +584,11 @@ export default {
   activated() {},
 };
 </script>
-<style >
+<style scoped>
+/* * {
+  margin: 0;
+  padding: 0;
+} */
 .bottom-right .van-icon-cash-back-record {
   font-size: 21px;
 }
@@ -647,7 +655,7 @@ export default {
   padding: 0 15px;
 }
 .youhui .news {
-  border-radius: 20px;
+  border-radius: 15px;
   margin-top: 15px;
 }
 .content ul li p {

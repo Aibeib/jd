@@ -15,7 +15,7 @@
           </div>
           <div class="personalTxt">
             <div class="personName">
-              <p>jd_135257suzo</p>
+              <p>{{nickName}}</p>
             </div>
             <div class="littlejd">
               <span>京享值</span>
@@ -167,6 +167,7 @@ export default {
   components: {},
   data() {
     return {
+      nickName:'',
       mylist: [
         { title: "商品收藏", num: 0, id: 101 },
         { title: "店铺收藏", num: 1, id: 102 },
@@ -269,6 +270,7 @@ export default {
   created() {
     this.changeactive(4);
     this.getproductlist();
+    this.nickName = localStorage.getItem('nickname')
   },
   mounted() {
     // 获取滚动条的高度

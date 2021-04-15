@@ -64,6 +64,9 @@ export default {
 };
 </script>
 <style scoped>
+.footer .van-tabbar--fixed{
+  z-index: 3;
+}
 .van-tabbar-item--active {
   color: rgb(238, 10, 36) !important;
 }

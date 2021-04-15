@@ -583,7 +583,7 @@ html {
   margin-top: 7px;
 }
 .box1 {
-  margin-top: 55px;
+  margin-top: 15px;
 }
 .my-swipe .van-swipe-item {
   color: #fff;
