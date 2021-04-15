@@ -330,7 +330,12 @@
         <van-goods-action>
           <van-goods-action-icon icon="shop-o" text="店铺" badge="0" />
           <van-goods-action-icon icon="chat-o" text="客服" dot />
-          <van-goods-action-icon icon="cart-o" text="购物车" :badge="num" />
+          <van-goods-action-icon
+            icon="cart-o"
+            text="购物车"
+            :badge="num"
+            @click="onClickIcon1"
+          />
 
           <van-goods-action-button
             type="warning"
@@ -422,6 +427,10 @@ export default {
   watch: {},
 
   methods: {
+    onClickIcon1() {
+      console.log(1);
+      this.$router.push("/cart");
+    },
     onchange() {
       this.value4 = 0;
       console.log(1);
