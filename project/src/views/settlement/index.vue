@@ -146,7 +146,13 @@ export default {
       this.$router.go(-1);
     },
     onEdit(item, index) {
-      this.$router.push("/deal");
+      this.$router.push({
+        path: "/deal",
+        query: { id: item.id },
+      });
+      //this.$router.push("/deal");
+      console.log(index);
+      console.log(item);
     },
     //获取单个地址信息
     async getThisAddress() {
