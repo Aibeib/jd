@@ -11,7 +11,6 @@
       <ul>
         <li>
           <van-address-list
-            :checked="true"
             v-model="chosenAddressId"
             :list="list"
             :disabled-list="disabledList"
@@ -29,7 +28,7 @@
 
 <script>
 import { Toast } from "vant";
-import { addList, delAddress } from "../../utils/userInfo";
+import { addList, delAddress, loadUserInfo } from "../../utils/userInfo";
 import { Dialog } from "vant";
 export default {
   components: {},
@@ -47,6 +46,7 @@ export default {
         },
       ],
       isDefault: false,
+      addId: [],
     };
   },
   computed: {},
@@ -66,6 +66,7 @@ export default {
           tel: item.mobile,
           isDefault: item.isDefault,
         });
+        this.addId.push(item._id);
       });
       if (this.list[0].isDefault == true) {
         for (var i = 1; i <= this.list.length; i++) {
@@ -73,7 +74,7 @@ export default {
         }
       }
       this.list.forEach((item) => {});
-      console.log(this.list);
+      // console.log(this.list);
     },
     //跳转新增地址
     onAdd() {
@@ -82,6 +83,7 @@ export default {
     //编辑收货地址
     onEdit(item, index) {
       console.log(item.id);
+
       var id = (this.id = item.id);
       // Toast("编辑地址:" + index);
       Dialog.confirm({
@@ -103,7 +105,7 @@ export default {
         });
     },
     //设置默认地址
-    dz(item) {
+    dz(item, index) {
       console.log(item.id);
       this.$router.push("/settlement");
       localStorage.setItem("itemid", item.id);
@@ -113,6 +115,17 @@ export default {
     },
   },
   created() {
+    const id = this.$route.query.id;
+    console.log(id);
+    console.log(this.addId);
+    this.addId.forEach(function (v, i) {
+      console.log(v);
+      console.log(v.id);
+      if (v == id) {
+        this.chosenAddressId = i + 1;
+        console.log(this.chosenAddressId);
+      }
+    });
     this.getaddressList();
   },
   mounted() {},
